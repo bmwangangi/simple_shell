@@ -3,7 +3,7 @@
 #define MAX_INPUT_LENGTH 100
 
 /**
- * exe_cmd _ this is the execute command
+ * exe_cmd _ Execute a command
  *
  * @cmd: command to execute.
  */
@@ -17,17 +17,18 @@ void exe_cmd(const char *cmd);
 int main(void)
 {
 	char input[MAX_INPUT_LENGTH];
+	size_t input_length = 0;
 
 	while (1)
 	{
 		printf("#cisfun$ ");
 		if (fgets(input, MAX_INPUT_LENGTH, stdin) == NULL)
 		{
-			printf("\n") :
+			printf("\n") ;
 				break;
 		}
-
-		size_t input_length = strlen(input);
+		
+		input_length = strlen(input);
 
 		if (input_length > 0 && input[input_length - 1] == '\n')
 			input[input_length - 1] = '\0';

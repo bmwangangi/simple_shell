@@ -1,15 +1,9 @@
-/**
- * File: shell.c
- * Author: BARTASA and  JOE
- * Description: implemantation of a basic simple shell
- */
-
 #include "shell.h"
 
 #define MAX_INPUT_LENGTH 100
 
 /**
- * exe_cmd _ used to execute a commandby the shell
+ * exe_cmd _ this is the execute command
  *
  * @cmd: command to execute.
  */

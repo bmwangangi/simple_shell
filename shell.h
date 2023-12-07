@@ -9,6 +9,7 @@
 
 #define MAX_INPUT_LENGTH 100
 #define TOK_DELIM " \t\r\n\a"
+void execute_command(char **commandTokens);
 
 char **split_string(char *input_str);
 void exe_cmd(const char *cmd);

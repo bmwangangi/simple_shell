@@ -15,7 +15,11 @@ void handle_signal(int signal_number);
 
 
 /**
+<<<<<<< HEAD
+ * main - This is the entry point for the shell
+=======
  * main - Is the main entry point for the shell
+>>>>>>> 8858959d27be45ab11d58a2bda6e09ae19f665b8
  *
  * Return: Always 0
  */
@@ -57,7 +61,7 @@ int main(void)
 }
 
 /**
- * display_prompt - Display the shell prompt
+ * display_prompt - Displays the shell prompt
  */
 void display_prompt(void)
 {
@@ -66,9 +70,9 @@ void display_prompt(void)
 }
 
 /**
- * read_input - Read a line from standard input
+ * read_input - Reads a line from standard input
  *
- * Return: The line read from stdin
+ * Return: The line reads from stdin
  */
 char *read_input()
 {
@@ -95,7 +99,6 @@ char *read_input()
 
 /**
  * tokenize_input - Tokenize a line into arguments
- *
  * @input_line: The line to be tokenized
  * Return: An array of tokens
  */

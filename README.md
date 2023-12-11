@@ -1,1 +1,3 @@
-trab and Joel Njenga simple shell
+Trab and Joel Njenga simple shell
+Group project
+

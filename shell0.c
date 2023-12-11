@@ -6,17 +6,17 @@
 #include <sys/wait.h>
 
 
-extern char **environ;  /* Declare the external variable */
+extern char **environ;
 
 #define MAX_INPUT_SIZE 1024
 
 /**
- * execute_command - Executes a command in a child process.
+ * execute_cmd - Executes a command.
  * @cmd: The command to be executed.
  *
  * Return: The exit status of the executed command.
  */
-int execute_command(char *cmd) {
+int execute_cmd(char *cmd) {
     pid_t pid = fork();
 
     if (pid == -1) {
@@ -58,7 +58,7 @@ int execute_command(char *cmd) {
  */
 int main(void) {
     char input[MAX_INPUT_SIZE];
-    int result;
+    int rlt;
 
     while (1) {
         printf("#cisfun$ ");
@@ -74,9 +74,9 @@ int main(void) {
         input[strcspn(input, "\n")] = '\0';
 
         /* Execute the command */
-        result = execute_command(input);
+        rlt = execute_cmd(input);
 
-        if (result == 0) {
+        if (rlt == 0) {
             printf("Command executed successfully.\n");
         } else {
             fprintf(stderr, "./shell: No such file or directory\n");

@@ -69,7 +69,7 @@ void display_prompt(void)
 }
 
 /**
- * read_input - Read a line from standard input
+ * read_input - Reads a line from standard input
  *
  * Return: The line read from stdin
  */

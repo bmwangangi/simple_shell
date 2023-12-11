@@ -4,7 +4,7 @@
 #define MAX_ARGS 64
 
 /**
- * Function prototypes
+ *The  Function prototypes
  */
 void display_prompt(void);
 char *read_input();
@@ -14,7 +14,7 @@ int is_builtin_command(char **arguments);
 void handle_signal(int signal_number);
 
 /**
- * main - Entry point for the shell
+ * main - Is the main entry point for the shell
  *
  * Return: Always 0
  */

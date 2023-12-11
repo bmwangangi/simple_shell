@@ -13,6 +13,7 @@ void execute_command(char **arguments, int *exit_status);
 int is_builtin_command(char **arguments);
 void handle_signal(int signal_number);
 
+
 /**
  * main - Is the main entry point for the shell
  *

@@ -63,7 +63,7 @@ int main(void) {
     while (1) {
         printf("#cisfun$ ");
 
-        /* Read user input */
+        /* Read the user input */
         if (fgets(input, sizeof(input), stdin) == NULL) {
             /* Handle Ctrl+D (end of file) */
             printf("\n");

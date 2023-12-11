@@ -14,7 +14,7 @@ int is_builtin_command(char **arguments);
 void handle_signal(int signal_number);
 
 /**
- * main - Entry point for the shell
+ * main - This is the entry point for the shell
  *
  * Return: Always 0
  */
@@ -56,7 +56,7 @@ int main(void)
 }
 
 /**
- * display_prompt - Display the shell prompt
+ * display_prompt - Displays the shell prompt
  */
 void display_prompt(void)
 {

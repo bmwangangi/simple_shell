@@ -54,7 +54,7 @@ int execute_cmd(char *cmd) {
 /**
  * main - Entry point for the simple shell.
  *
- * Return: Always returns 0.
+ * Return: Always 0.
  */
 int main(void) {
     char input[MAX_INPUT_SIZE];

@@ -71,7 +71,7 @@ void display_prompt(void)
 /**
  * read_input - Reads a line from standard input
  *
- * Return: The line read from stdin
+ * Return: The line reads from stdin
  */
 char *read_input()
 {
@@ -98,7 +98,6 @@ char *read_input()
 
 /**
  * tokenize_input - Tokenize a line into arguments
- *
  * @input_line: The line to be tokenized
  * Return: An array of tokens
  */

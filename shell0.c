@@ -23,6 +23,7 @@ int execute_cmd(char *cmd) {
         perror("fork");
         exit(EXIT_FAILURE);
     } else if (pid == 0) {
+
         /* Child process */
         char **args = malloc(2 * sizeof(char *));
         if (args == NULL) {

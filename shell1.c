@@ -21,35 +21,32 @@ void handle_signal(int signal_number);
  */
 int main(void)
 {
-	char *input_line;
+	char *insert_line;
 	char **arguments;
-	int exit_status = 0;  /* Add an exit status variable */
+	int exit_sts = 0;
 
-	/* Register signal handlers for Ctrl+C and Ctrl+Z */
 	signal(SIGINT, handle_signal);
-	signal(SIGTSTP, SIG_IGN);  /* Ignore Ctrl+Z for now */
+	signal(SIGTSTP, SIG_IGN);
 
-	while (!exit_status)  /* Change the exit condition */
+	while (!exit_sts)
 	{
 		display_prompt();
-		input_line = read_input();
-		arguments = tokenize_input(input_line);
+		insert_line = read_input();
+		arguments = tokenize_input(insert_line);
 
 		if (arguments[0] != NULL)
 		{
 			if (is_builtin_command(arguments))
 			{
-				/* Execute built-in command */
-				execute_command(arguments, &exit_status);  /* Pass the exit_statu */
+				execute_command(arguments, &exit_sts);
 			}
 			else
 			{
-				/* Execute external command */
-				execute_command(arguments, &exit_status);  /* Pass the exit_status */
+				execute_command(arguments, &exit_sts);
 			}
 		}
 
-		free(input_line);
+		free(insert_line);
 		free(arguments);
 	}
 
@@ -57,18 +54,18 @@ int main(void)
 }
 
 /**
- * display_prompt - Displays the shell prompt
+ * display_prompt - used to displa the dollar sign
  */
 void display_prompt(void)
 {
 	printf("$ ");
-	fflush(stdout);  /* Flush the output to ensure it's displayed immediately */
+	fflush(stdout);
 }
 
 /**
- * read_input - Reads a line from standard input
+ * read_input - used to read line from stdin
  *
- * Return: The line reads from stdin
+ * Return: the line read
  */
 char *read_input()
 {
@@ -94,9 +91,9 @@ char *read_input()
 }
 
 /**
- * tokenize_input - Tokenize a line into arguments
- * @input_line: The line to be tokenized
- * Return: An array of tokens
+ * tokenize_input - used to tokenize input
+ * @input_line: The line 
+ * Return: array
  */
 char **tokenize_input(char *input_line)
 {
@@ -137,17 +134,17 @@ char **tokenize_input(char *input_line)
 /**
  * execute_command - Execute a command with arguments
  *
- * @arguments: The arguments of the command
- * @exit_status: Pointer to the exit status variable
+ * @arguments: The arguments
+ * @exit_status: Pointer to the exit
  */
 void execute_command(char **arguments, int *exit_status)
 {
-	pid_t process_id;  /* Remove unused variable wait_process_id */
+	pid_t process_id;
 	int process_status;
 
 	if (strcmp(arguments[0], "exit") == 0)
 	{
-		*exit_status = 1;  /* Set exit status*/
+		*exit_status = 1;
 		return;
 	}
 
@@ -155,24 +152,21 @@ void execute_command(char **arguments, int *exit_status)
 
 	if (process_id == 0)
 	{
-		/* Child process */
 		if (execvp(arguments[0], arguments) == -1)
 		{
 			perror("Error executing command");
-			*exit_status = 1;  /* Set exit status to indicate an error */
+			*exit_status = 1;
 			exit(EXIT_FAILURE);
 		}
-		exit(EXIT_SUCCESS);  /* Indicate a successful exit */
+		exit(EXIT_SUCCESS);
 	}
 	else if (process_id < 0)
 	{
-		/* Forking error */
 		perror("Error forking");
-		*exit_status = 1;  /* Set exit status to indicate an error */
+		*exit_status = 1;
 	}
 	else
 	{
-		/* Parent process */
 		do {
 			process_id = waitpid(process_id, &process_status, WUNTRACED);
 		} while (!WIFEXITED(process_status) && !WIFSIGNALED(process_status));
@@ -180,15 +174,15 @@ void execute_command(char **arguments, int *exit_status)
 }
 
 /**
- * is_builtin_command - Check if the command is a built-in command
+ * is_builtin_command - Check if is a built in command
  *
- * @arguments: The arguments of the command
- * Return: 1 if the command is built-in, 0 otherwise
+ * @arguments: The arguments 
+ * Return: 1
  */
 int is_builtin_command(char **arguments)
 {
 	const char *builtin_commands[] = {"cd", "pwd", "exit"};
-	size_t index;  /* Change the type to size_t */
+	size_t index;
 	size_t trab = sizeof(builtin_commands) / sizeof(builtin_commands[0]);
 
 	for (index = 0; index < trab; index++)
@@ -211,11 +205,10 @@ void handle_signal(int signal_number)
 {
 	if (signal_number == SIGINT)
 	{
-		/* Handle Ctrl+C signal */
 		printf("\n");
 		display_prompt();
 		fflush(stdout);
-		exit(EXIT_SUCCESS);  /* Exit the shell on Ctrl+C */
+		exit(EXIT_SUCCESS);
 	}
 }
 

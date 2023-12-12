@@ -5,51 +5,25 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-extern char **environ;
-
-#define MAX_INPUT_SIZE 1024
+#define MAX_SIZE 1024
 
 /**
- * execute_cmd - Executes a command.
- * @cmd: The command to be executed.
+ * exe_cmd - used to execute the commands
+ * @command:the cmd to be executed
  *
- * Return: The exit status of the executed command.
+ * Return: Exit status
  */
-int execute_cmd(char *cmd) {
-    pid_t pid = fork();
+int exe_cmd(char *command)
+{
+	int situation = system(command);
 
-    if (pid == -1) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-    } else if (pid == 0) {
-        /* Child process */
-        char **args = malloc(2 * sizeof(char *));
+	if (situation == -1)
+	{
+		perror("method");
+		exit(EXIT_FAILURE);
+	}
 
-        if (args == NULL) {
-            perror("malloc");
-            exit(EXIT_FAILURE);
-        }
-
-        args[0] = cmd;
-        args[1] = NULL;
-
-        if (execve(cmd, args, environ) == -1) {
-            perror("execve");
-            exit(EXIT_FAILURE);
-        }
-
-        free(args);
-    } else {
-        /* Parent process */
-        int status;
-
-        waitpid(pid, &status, 0);
-        if (WIFEXITED(status)) {
-            return WEXITSTATUS(status);
-        }
-    }
-
-    return -1;
+	return (situation);
 }
 
 /**
@@ -57,33 +31,46 @@ int execute_cmd(char *cmd) {
  *
  * Return: Always 0.
  */
-int main(void) {
-    char input[MAX_INPUT_SIZE];
-    int rlt;
+int main(void)
+{
+	char insert[MAX_SIZE];
+	int rlt;
 
-    while (1) {
-        printf("#cisfun$ ");
+	while (1)
+	{
+		if (isatty(STDIN_FILENO))
+		{
+			printf("#cisfun$ ");
+		}
 
-        /* Read user input */
-        if (fgets(input, sizeof(input), stdin) == NULL) {
-            /* Handle Ctrl+D (end of file) */
-            printf("\n");
-            break;
-        }
+		/*we use this function to read the user input */
+		if (fgets(insert, sizeof(insert), stdin) == NULL)
+		{
+			if (isatty(STDIN_FILENO))
+			{
+				printf("\n");
+			}
 
-        /* Remove trailing newline character */
-        input[strcspn(input, "\n")] = '\0';
+			break;
+		}
 
-        /* Execute the command */
-        rlt = execute_cmd(input);
+		insert[strcspn(insert, "\n")] = '\0';
 
-        if (rlt == 0) {
-            printf("Command executed successfully.\n");
-        } else {
-            fprintf(stderr, "./shell: No such file or directory\n");
-        }
-    }
+		rlt = exe_cmd(insert);
 
-    return 0;
+		if (isatty(STDIN_FILENO))
+		{
+			if (rlt == 0)
+			{
+				printf("Command was  successful.\n");
+			}
+			else
+			{
+				fprintf(stderr, "./shell: Command failed with status %d\n", rlt);
+			}
+		}
+	}
+
+	return (0);
 }
 

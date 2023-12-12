@@ -13,47 +13,7 @@ void execute_command(char **arguments, int *exit_status);
 int is_builtin_command(char **arguments);
 void handle_signal(int sgn_no);
 
-
-/**
- * main - This is the entry point for the shell
- *
- * Return: Always 0
- */
-int main(void)
-{
-	char *insert_line;
-	char **arguments;
-	int exit_sts = 0;
-
-	signal(SIGINT, handle_signal);
-	signal(SIGTSTP, SIG_IGN);
-
-	while (!exit_sts)
-	{
-		display_prompt();
-		insert_line = read_input();
-		arguments = tokenize_input(insert_line);
-
-		if (arguments[0] != NULL)
-		{
-			if (is_builtin_command(arguments))
-			{
-				execute_command(arguments, &exit_sts);
-			}
-			else
-			{
-				execute_command(arguments, &exit_sts);
-			}
-		}
-
-		free(insert_line);
-		free(arguments);
-	}
-
-	return (0);
-}
-
-/**
+/*
  * display_prompt - used  to displa the dollar sign
  */
 void display_prompt(void)

@@ -1,11 +1,17 @@
 #include "shell.h"
 
+/**
+ * main - Entry point for the simple shell.
+ *
+ * Return: Always 0.
+ */
 int main(void)
 {
     char *insert_line;
     char **arguments;
     int exit_sts = 0;
 
+    /* Set up signal handlers */
     signal(SIGINT, handle_signal);
     signal(SIGTSTP, SIG_IGN);
 

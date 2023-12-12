@@ -11,7 +11,7 @@ char *read_input();
 char **tokenize_input(char *input_line);
 void execute_command(char **arguments, int *exit_status);
 int is_builtin_command(char **arguments);
-void handle_signal(int signal_number);
+void handle_signal(int sgn_no);
 
 
 /**
@@ -54,7 +54,7 @@ int main(void)
 }
 
 /**
- * display_prompt - used to displa the dollar sign
+ * display_prompt - used  to displa the dollar sign
  */
 void display_prompt(void)
 {
@@ -69,39 +69,39 @@ void display_prompt(void)
  */
 char *read_input()
 {
-	char *input_line = NULL;
-	size_t buffer_size = 0;
+	char *insert_line = NULL;
+	size_t the_buffer_size = 0;
 
-	if (getline(&input_line, &buffer_size, stdin) == -1)
+	if (getline(&insert_line, &the_buffer_size, stdin) == -1)
 	{
 		if (feof(stdin))
 		{
-			free(input_line);
+			free(insert_line);
 			exit(EXIT_SUCCESS);
 		}
 		else
 		{
-			free(input_line);
+			free(insert_line);
 			perror("Error reading the line from stdin");
 			exit(EXIT_FAILURE);
 		}
 	}
 
-	return (input_line);
+	return (insert_line);
 }
 
 /**
  * tokenize_input - used to tokenize input
- * @input_line: The line 
+ * @input_line: The line
  * Return: array
  */
 char **tokenize_input(char *input_line)
 {
-	int buffer_size = MAX_ARGS, position = 0;
-	char **tokens = malloc(buffer_size * sizeof(char *));
+	int the_buffer_size = MAX_ARGS, position = 0;
+	char **tokenization = malloc(the_buffer_size * sizeof(char *));
 	char *token;
 
-	if (!tokens)
+	if (!tokenization)
 	{
 		perror("Allocation error in tokenize_input");
 		exit(EXIT_FAILURE);
@@ -110,14 +110,14 @@ char **tokenize_input(char *input_line)
 	token = strtok(input_line, " \t\r\n\a");
 	while (token != NULL)
 	{
-		tokens[position] = token;
+		tokenization[position] = token;
 		position++;
 
-		if (position >= buffer_size)
+		if (position >= the_buffer_size)
 		{
-			buffer_size += MAX_ARGS;
-			tokens = realloc(tokens, buffer_size * sizeof(char *));
-			if (!tokens)
+			the_buffer_size += MAX_ARGS;
+			tokenization = realloc(tokenization, the_buffer_size * sizeof(char *));
+			if (!tokenization)
 			{
 				perror("Reallocation error in tokenize_input");
 				exit(EXIT_FAILURE);
@@ -127,24 +127,24 @@ char **tokenize_input(char *input_line)
 		token = strtok(NULL, " \t\r\n\a");
 	}
 
-	tokens[position] = NULL;
-	return (tokens);
+	tokenization[position] = NULL;
+	return (tokenization);
 }
 
 /**
  * execute_command - Execute a command with arguments
  *
  * @arguments: The arguments
- * @exit_status: Pointer to the exit
+ * @exit_code: Pointer to the exit
  */
-void execute_command(char **arguments, int *exit_status)
+void execute_command(char **arguments, int *exit_code)
 {
 	pid_t process_id;
-	int process_status;
+	int the_process;
 
 	if (strcmp(arguments[0], "exit") == 0)
 	{
-		*exit_status = 1;
+		*exit_code = 1;
 		return;
 	}
 
@@ -155,7 +155,7 @@ void execute_command(char **arguments, int *exit_status)
 		if (execvp(arguments[0], arguments) == -1)
 		{
 			perror("Error executing command");
-			*exit_status = 1;
+			*exit_code = 1;
 			exit(EXIT_FAILURE);
 		}
 		exit(EXIT_SUCCESS);
@@ -163,31 +163,31 @@ void execute_command(char **arguments, int *exit_status)
 	else if (process_id < 0)
 	{
 		perror("Error forking");
-		*exit_status = 1;
+		*exit_code = 1;
 	}
 	else
 	{
 		do {
-			process_id = waitpid(process_id, &process_status, WUNTRACED);
-		} while (!WIFEXITED(process_status) && !WIFSIGNALED(process_status));
+			process_id = waitpid(process_id, &the_process, WUNTRACED);
+		} while (!WIFEXITED(the_process) && !WIFSIGNALED(the_process));
 	}
 }
 
 /**
  * is_builtin_command - Check if is a built in command
  *
- * @arguments: The arguments 
+ * @arg: The arguments
  * Return: 1
  */
-int is_builtin_command(char **arguments)
+int is_builtin_command(char **arg)
 {
 	const char *builtin_commands[] = {"cd", "pwd", "exit"};
-	size_t index;
+	size_t sharon;
 	size_t trab = sizeof(builtin_commands) / sizeof(builtin_commands[0]);
 
-	for (index = 0; index < trab; index++)
+	for (sharon = 0; sharon < trab; sharon++)
 	{
-		if (strcmp(arguments[0], builtin_commands[index]) == 0)
+		if (strcmp(arg[0], builtin_commands[sharon]) == 0)
 		{
 			return (1);
 		}
@@ -199,11 +199,11 @@ int is_builtin_command(char **arguments)
 /**
  * handle_signal - Handle signals
  *
- * @signal_number: The signal number
+ * @sgn_no: The signal number
  */
-void handle_signal(int signal_number)
+void handle_signal(int sgn_no)
 {
-	if (signal_number == SIGINT)
+	if (sgn_no == SIGINT)
 	{
 		printf("\n");
 		display_prompt();

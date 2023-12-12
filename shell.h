@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#define MAX_INPUT_SIZE 1024;
+#define MAX_INPUT_SIZE 1024
 #define MAX_ARGS 64
 
 extern char **environ;

@@ -18,5 +18,7 @@ char **tokenize_input(char *input_line);
 void execute_command(char **arguments, int *exit_status);
 int is_builtin_command(char **arguments);
 void handle_signal(int sgn_no);
+int exit_builtin(void);
+int is_it_exit_builtin(char *cmd);
 
 #endif

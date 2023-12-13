@@ -12,12 +12,11 @@
 #define MAX_INPUT_SIZE 1024
 #define MAX_ARGS 64
 
-extern char **environ;
 void display_prompt(void);
 char *read_input();
 char **tokenize_input(char *input_line);
 void execute_command(char **arguments, int *exit_status);
 int is_builtin_command(char **arguments);
-void handle_signal(int signal_number);
+void handle_signal(int sgn_no);
 
 #endif

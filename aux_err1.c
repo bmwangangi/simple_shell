@@ -66,4 +66,5 @@ char *error_path_126(data_shell *datash)
 	_strcat(errormessage, "\0");
 	free(counter_str);
 	return (errormessage);
+
 }

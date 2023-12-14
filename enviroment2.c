@@ -1,68 +1,66 @@
 #include "main.h"
 
 /**
- * copy_info - copies info to create
- * a new env or alias
- * @name: name (env or alias)
- * @value: value (env or alias)
+ * copy_info - used to copy the information created
+ * @name: the variable
+ * @value: used for storing values
  *
- * Return: new env or alias.
+ * Return: env
  */
 char *copy_info(char *name, char *value)
 {
-	char *new;
-	int len_name, len_value, len;
+	char *newvalue;
+	int length_name, length_value, length;
 
-	len_name = _strlen(name);
-	len_value = _strlen(value);
-	len = len_name + len_value + 2;
-	new = malloc(sizeof(char) * (len));
-	_strcpy(new, name);
-	_strcat(new, "=");
-	_strcat(new, value);
-	_strcat(new, "\0");
+	length_name = _strlen(name);
+	length_value = _strlen(value);
+	length = length_name + length_value + 2;
+	newvalue = malloc(sizeof(char) * (length));
+	_strcpy(newvalue, name);
+	_strcat(newvalue, "=");
+	_strcat(newvalue, value);
+	_strcat(newvalue, "\0");
 
-	return (new);
+	return (newvalue);
 }
 
 /**
- * set_env - sets an environment variable
+ * set_env - used to set a new env variable
  *
- * @name: name of the environment variable
- * @value: value of the environment variable
- * @datash: data structure (environ)
- * Return: no return
+ * @name: the env variable
+ * @value: the value of the variable
+ * @datash: the data holding the info
+ * Return: 0
  */
 void set_env(char *name, char *value, data_shell *datash)
 {
-	int i;
-	char *var_env, *name_env;
+	int a;
+	char *variable_env, *name_enviroment;
 
-	for (i = 0; datash->_environ[i]; i++)
+	for (a = 0; datash->_environ[a]; a++)
 	{
-		var_env = _strdup(datash->_environ[i]);
-		name_env = _strtok(var_env, "=");
-		if (_strcmp(name_env, name) == 0)
+		variable_env = _strdup(datash->_environ[a]);
+		name_enviroment = _strtok(variable_env, "=");
+		if (_strcmp(name_enviroment, name) == 0)
 		{
-			free(datash->_environ[i]);
-			datash->_environ[i] = copy_info(name_env, value);
-			free(var_env);
+			free(datash->_environ[a]);
+			datash->_environ[a] = copy_info(name_enviroment, value);
+			free(variable_env);
 			return;
 		}
-		free(var_env);
+		free(variable_env);
 	}
 
-	datash->_environ = _reallocdp(datash->_environ, i, sizeof(char *) * (i + 2));
-	datash->_environ[i] = copy_info(name, value);
-	datash->_environ[i + 1] = NULL;
+	datash->_environ = _reallocdp(datash->_environ, a, sizeof(char *) * (a + 2));
+	datash->_environ[a] = copy_info(name, value);
+	datash->_environ[a + 1] = NULL;
 }
 
 /**
- * _setenv - compares env variables names
- * with the name passed.
- * @datash: data relevant (env name and env value)
+ * _setenv - used to copmare env variables
+ * @datash: the data holding info
  *
- * Return: 1 on success.
+ * Return: 1
  */
 int _setenv(data_shell *datash)
 {
@@ -79,51 +77,51 @@ int _setenv(data_shell *datash)
 }
 
 /**
- * _unsetenv - deletes a environment variable
+ * _unsetenv - used to delete env var
  *
- * @datash: data relevant (env name)
+ * datash: the data holding the info
  *
- * Return: 1 on success.
+ * Return: 1
  */
 int _unsetenv(data_shell *datash)
 {
-	char **realloc_environ;
-	char *var_env, *name_env;
-	int i, j, k;
+	char **realloc_environment;
+	char *variable_env, *name_enviroment;
+	int a, b, c;
 
 	if (datash->args[1] == NULL)
 	{
 		get_error(datash, -1);
 		return (1);
 	}
-	k = -1;
-	for (i = 0; datash->_environ[i]; i++)
+	c = -1;
+	for (a = 0; datash->_environ[a]; a++)
 	{
-		var_env = _strdup(datash->_environ[i]);
-		name_env = _strtok(var_env, "=");
-		if (_strcmp(name_env, datash->args[1]) == 0)
+		variable_env = _strdup(datash->_environ[a]);
+		name_enviroment = _strtok(variable_env, "=");
+		if (_strcmp(name_enviroment, datash->args[1]) == 0)
 		{
-			k = i;
+			c = a;
 		}
-		free(var_env);
+		free(variable_env);
 	}
-	if (k == -1)
+	if (c == -1)
 	{
 		get_error(datash, -1);
 		return (1);
 	}
-	realloc_environ = malloc(sizeof(char *) * (i));
-	for (i = j = 0; datash->_environ[i]; i++)
+	realloc_environment = malloc(sizeof(char *) * (a));
+	for (a = b = 0; datash->_environ[a]; a++)
 	{
-		if (i != k)
+		if (a != c)
 		{
-			realloc_environ[j] = datash->_environ[i];
-			j++;
+			realloc_environment[b] = datash->_environ[a];
+			b++;
 		}
 	}
-	realloc_environ[j] = NULL;
-	free(datash->_environ[k]);
+	realloc_environment[b] = NULL;
+	free(datash->_environ[c]);
 	free(datash->_environ);
-	datash->_environ = realloc_environ;
+	datash->_environ = realloc_environment;
 	return (1);
 }

@@ -1,11 +1,11 @@
 #include "main.h"
 
 /**
- * bring_line - assigns the line var for get_line
- * @lineptr: Buffer that store the input str
- * @buffer: str that is been called to line
- * @n: size of line
- * @j: size of buffer
+ * bring_line - used to  assign a line to a character
+ * @lineptr: used to store the input
+ * @buffer: the string called
+ * @n: the line size
+ * @j: the buffer
  */
 void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
 {
@@ -34,51 +34,51 @@ void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
 	}
 }
 /**
- * get_line - Read inpt from stream
- * @lineptr: buffer that stores the input
- * @n: size of lineptr
- * @stream: stream to read from
- * Return: The number of bytes
+ * get_line - used to read input
+ * @lineptr: where it is stored
+ * @n: klength of the line input
+ * @stream: where to read from
+ * Return: no of bytes
  */
 ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 {
-	int i;
-	static ssize_t input;
-	ssize_t retval;
-	char *buffer;
-	char t = 'z';
+	int a;
+	static ssize_t userinput;
+	ssize_t retvalue;
+	char *buffers;
+	char b = 'z';
 
-	if (input == 0)
+	if (userinput == 0)
 		fflush(stream);
 	else
 		return (-1);
-	input = 0;
+	userinput = 0;
 
-	buffer = malloc(sizeof(char) * BUFSIZE);
-	if (buffer == 0)
+	buffers = malloc(sizeof(char) * BUFSIZE);
+	if (buffers == 0)
 		return (-1);
-	while (t != '\n')
+	while (b != '\n')
 	{
-		i = read(STDIN_FILENO, &t, 1);
-		if (i == -1 || (i == 0 && input == 0))
+		a = read(STDIN_FILENO, &b, 1);
+		if (a == -1 || (a == 0 && userinput == 0))
 		{
-			free(buffer);
+			free(buffers);
 			return (-1);
 		}
-		if (i == 0 && input != 0)
+		if (a == 0 && userinput != 0)
 		{
-			input++;
+			userinput++;
 			break;
 		}
-		if (input >= BUFSIZE)
-			buffer = _realloc(buffer, input, input + 1);
-		buffer[input] = t;
-		input++;
+		if (userinput >= BUFSIZE)
+			buffers = _realloc(buffers, userinput, userinput + 1);
+		buffers[userinput] = b;
+		userinput++;
 	}
-	buffer[input] = '\0';
-	bring_line(lineptr, n, buffer, input);
-	retval = input;
-	if (i != 0)
-		input = 0;
-	return (retval);
+	buffers[userinput] = '\0';
+	bring_line(lineptr, n, buffers, userinput);
+	retvalue = userinput;
+	if (a != 0)
+		userinput = 0;
+	return (retvalue);
 }

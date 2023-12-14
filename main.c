@@ -1,42 +1,44 @@
 #include "shell.h"
 
 /**
- * main - Entry point for the simple shell.
+ * main - entry point
+ * @ac: arg count
+ * @av: arg vector
  *
- * Return: Always 0.
+ * Return: 0 on success, 1 on error
  */
-int main(void)
+int main(int ac, char **av)
 {
-	char *insert_line;
-	char **arguments;
-	int exit_sts = 0;
+	info_t info[] = { INFO_INIT };
+	int fd = 2;
 
-	/* Set up signal handlers */
-	signal(SIGINT, handle_signal);
-	signal(SIGTSTP, SIG_IGN);
+	asm ("mov %1, %0\n\t"
+		"add $3, %0"
+		: "=r" (fd)
+		: "r" (fd));
 
-	while (!exit_sts)
+	if (ac == 2)
 	{
-		display_prompt();
-		insert_line = read_input();
-		arguments = tokenize_input(insert_line);
-
-		if (arguments[0] != NULL)
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1)
 		{
-			if (is_builtin_command(arguments))
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
 			{
-				execute_command(arguments, &exit_sts);
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
 			}
-			else
-			{
-				execute_command(arguments, &exit_sts);
-			}
+			return (EXIT_FAILURE);
 		}
-
-		free(insert_line);
-		free(arguments);
+		info->readfd = fd;
 	}
-
-	return (0);
+	populate_env_list(info);
+	read_history(info);
+	hsh(info, av);
+	return (EXIT_SUCCESS);
 }
-

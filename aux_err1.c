@@ -1,69 +1,69 @@
 #include "main.h"
 
 /**
- * error_env - error message for env in get_env.
- * @datash: data relevant (counter, arguments)
- * Return: error message.
+ * error_env - Err sent for env in get_env.
+ * @datash: relevant data for counters
+ * Return: An error
  */
 char *error_env(data_shell *datash)
 {
-	int length;
-	char *error;
-	char *ver_str;
-	char *msg;
+	int totallength;
+	char *errormessage;
+	char *counter_str;
+	char *message;
 
-	ver_str = aux_itoa(datash->counter);
-	msg = ": Unable to add/remove from environment\n";
-	length = _strlen(datash->av[0]) + _strlen(ver_str);
-	length += _strlen(datash->args[0]) + _strlen(msg) + 4;
-	error = malloc(sizeof(char) * (length + 1));
-	if (error == 0)
+	counter_str = aux_itoa(datash->counter);
+	message = ": Error when trying to add/remove from env\n";
+	totallength = _strlen(datash->av[0]) + _strlen(counter_str);
+	totallength += _strlen(datash->args[0]) + _strlen(message) + 4;
+	errormessage= malloc(sizeof(char) * (totallength + 1));
+	if (errormessage == 0)
 	{
-		free(error);
-		free(ver_str);
+		free(errormessage);
+		free(counter_str);
 		return (NULL);
 	}
 
-	_strcpy(error, datash->av[0]);
-	_strcat(error, ": ");
-	_strcat(error, ver_str);
-	_strcat(error, ": ");
-	_strcat(error, datash->args[0]);
-	_strcat(error, msg);
-	_strcat(error, "\0");
-	free(ver_str);
+	_strcpy(errormessage, datash->av[0]);
+	_strcat(errormessage, ": ");
+	_strcat(errormessage, counter_str);
+	_strcat(errormessage, ": ");
+	_strcat(errormessage, datash->args[0]);
+	_strcat(errormessage, message);
+	_strcat(errormessage, "\0");
+	free(counter_str);
 
-	return (error);
+	return (errormessage);
 }
 /**
- * error_path_126 - error message for path and failure denied permission.
- * @datash: data relevant (counter, arguments).
+ * error_path_126 - Denied permission
+ * @datash: Relevant data, counter
  *
  * Return: The error string.
  */
 char *error_path_126(data_shell *datash)
 {
-	int length;
-	char *ver_str;
-	char *error;
+	int totallength;
+	char *counter_str;
+	char *errormessage;
 
-	ver_str = aux_itoa(datash->counter);
-	length = _strlen(datash->av[0]) + _strlen(ver_str);
-	length += _strlen(datash->args[0]) + 24;
-	error = malloc(sizeof(char) * (length + 1));
-	if (error == 0)
+	counter_str = aux_itoa(datash->counter);
+	totallength = _strlen(datash->av[0]) + _strlen(counter_str);
+	totallength += _strlen(datash->args[0]) + 24;
+	errormessage = malloc(sizeof(char) * (totallength + 1));
+	if (errormessage == 0)
 	{
-		free(error);
-		free(ver_str);
+		free(errormessage);
+		free(counter_str);
 		return (NULL);
 	}
-	_strcpy(error, datash->av[0]);
-	_strcat(error, ": ");
-	_strcat(error, ver_str);
-	_strcat(error, ": ");
-	_strcat(error, datash->args[0]);
-	_strcat(error, ": Permission denied\n");
-	_strcat(error, "\0");
-	free(ver_str);
-	return (error);
+	_strcpy(errormessage, datash->av[0]);
+	_strcat(errormessage, ": ");
+	_strcat(errormessage, counter_str);
+	_strcat(errormessage, ": ");
+	_strcat(errormessage, datash->args[0]);
+	_strcat(errormessage, ": Hit a wall\n");
+	_strcat(errormessage, "\0");
+	free(counter_str);
+	return (errormessage);
 }

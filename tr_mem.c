@@ -2,86 +2,86 @@
 
 /**
  * _memcpy - used to copy memory information
- * @newptr: where our pointer will go
- * @ptr: our original  pointer
- * @size: the pointer size
+ * @newpointer: where our pointer will go
+ * @pointer: our original  pointer
+ * @val: the pointer size
  *
  * Return: 0
  */
-void _memcpy(void *newptr, const void *ptr, unsigned int size)
+void _memcpy(void *newpointer, const void *pointer, unsigned int val)
 {
-	char *char_pointer = (char *)ptr;
-	char *char_newpointer = (char *)newptr;
+	char *char_pointer = (char *)pointer;
+	char *char_newpointer = (char *)newpointer;
 	unsigned int a;
 
-	for (a = 0; a < size; a++)
+	for (a = 0; a < val; a++)
 		char_newpointer[a] = char_pointer[a];
 }
 
 /**
  * _realloc - used to reallocate the memory of a block
- * @ptr: points to the mem
- * @old_size: represents the bites allocated
- * @new_size: reporesentsa the memory alocated
+ * @pointer: points to the mem
+ * @o_size: represents the bites allocated
+ * @n_size: reporesentsa the memory alocated
  *
  * Return: pointer
  */
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
+void *_realloc(void *pointer, unsigned int o_size, unsigned int n_size)
 {
 	void *newpointer;
 
-	if (ptr == NULL)
-		return (malloc(new_size));
+	if (pointer == NULL)
+		return (malloc(n_size));
 
-	if (new_size == 0)
+	if (n_size == 0)
 	{
-		free(ptr);
+		free(pointer);
 		return (NULL);
 	}
 
-	if (new_size == old_size)
-		return (ptr);
+	if (n_size == o_size)
+		return (pointer);
 
-	newpointer = malloc(new_size);
+	newpointer = malloc(n_size);
 	if (newpointer == NULL)
 		return (NULL);
 
-	if (new_size < old_size)
-		_memcpy(newpointer, ptr, new_size);
+	if (n_size < o_size)
+		_memcpy(newpointer, pointer, n_size);
 	else
-		_memcpy(newpointer, ptr, old_size);
+		_memcpy(newpointer, pointer, o_size);
 
-	free(ptr);
+	free(pointer);
 	return (newpointer);
 }
 
 /**
  * _reallocdp - used to allocate memory for double ptr
- * @ptr: the double pointer
- * @old_size: the opointer
- * @new_size: nthe new pointer
+ * @pointer: the double pointer
+ * @o_size: the opointer
+ * @n_size: nthe new pointer
  *
  * Return: pointer
  */
-char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size)
+char **_reallocdp(char **pointer, unsigned int o_size, unsigned int n_size)
 {
 	char **newpointer;
 	unsigned int a;
 
-	if (ptr == NULL)
-		return (malloc(sizeof(char *) * new_size));
+	if (pointer == NULL)
+		return (malloc(sizeof(char *) * n_size));
 
-	if (new_size == old_size)
-		return (ptr);
+	if (n_size == o_size)
+		return (pointer);
 
-	newpointer = malloc(sizeof(char *) * new_size);
+	newpointer = malloc(sizeof(char *) * n_size);
 	if (newpointer == NULL)
 		return (NULL);
 
-	for (a = 0; a < old_size; a++)
-		newpointer[a] = ptr[a];
+	for (a = 0; a < o_size; a++)
+		newpointer[a] = pointer[a];
 
-	free(ptr);
+	free(pointer);
 
 	return (newpointer);
 }

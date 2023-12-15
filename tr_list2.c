@@ -2,13 +2,13 @@
 
 /**
  * add_rvar_node - adds a variable at the end
- * @head: start of the list
- * @lvar: len of the var
- * @val: the var value.
- * @lval: len of the variable
+ * @start: start of the list
+ * @avar: len of the var
+ * @variable: the var value.
+ * @lowerval: len of the variable
  * Return: address.
  */
-r_var *add_rvar_node(r_var **head, int lvar, char *val, int lval)
+r_var *add_rvar_node(r_var **start, int avar, char *variable, int lowerval)
 {
 	r_var *old, *temperature;
 
@@ -16,16 +16,16 @@ r_var *add_rvar_node(r_var **head, int lvar, char *val, int lval)
 	if (old == NULL)
 		return (NULL);
 
-	old->len_var = lvar;
-	old->val = val;
-	old->len_val = lval;
+	old->len_var = avar;
+	old->val = variable;
+	old->len_val = lowerval;
 
 	old->next = NULL;
-	temperature = *head;
+	temperature = *start;
 
 	if (temperature == NULL)
 	{
-		*head = old;
+		*start = old;
 	}
 	else
 	{
@@ -34,27 +34,27 @@ r_var *add_rvar_node(r_var **head, int lvar, char *val, int lval)
 		temperature->next = old;
 	}
 
-	return (*head);
+	return (*start);
 }
 
 /**
  * free_rvar_list - used to free the variable list
- * @head: start of the list
+ * @start: start of the list
  * Return: 0
  */
-void free_rvar_list(r_var **head)
+void free_rvar_list(r_var **start)
 {
 	r_var *temperature;
 	r_var *current;
 
-	if (head != NULL)
+	if (start != NULL)
 	{
-		current = *head;
+		current = *start;
 		while ((temperature = current) != NULL)
 		{
 			current = current->next;
 			free(temperature);
 		}
-		*head = NULL;
+		*start = NULL;
 	}
 }

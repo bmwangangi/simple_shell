@@ -2,22 +2,22 @@
 
 /**
  * get_len - used to get len
- * @n: data type integer
+ * @a: data type integer
  * Return: len of no
  */
-int get_len(int n)
+int get_len(int a)
 {
 	unsigned int no;
 	int len = 1;
 
-	if (n < 0)
+	if (a < 0)
 	{
 		len++;
-		no = n * -1;
+		no = a * -1;
 	}
 	else
 	{
-		no = n;
+		no = a;
 	}
 	while (no > 9)
 	{
@@ -29,13 +29,13 @@ int get_len(int n)
 }
 /**
  * aux_itoa - for conversion to string
- * @n: interger no
+ * @a: interger no
  * Return: Str.
  */
-char *aux_itoa(int n)
+char *aux_itoa(int a)
 {
 	unsigned int no;
-	int len = get_len(n);
+	int len = get_len(a);
 	char *buf;
 
 	buf = malloc(sizeof(char) * (len + 1));
@@ -44,14 +44,14 @@ char *aux_itoa(int n)
 
 	*(buf + len) = '\0';
 
-	if (n < 0)
+	if (a < 0)
 	{
-		no = n * -1;
+		no = a * -1;
 		buf[0] = '-';
 	}
 	else
 	{
-		no = n;
+		no = a;
 	}
 
 	len--;
@@ -66,22 +66,22 @@ char *aux_itoa(int n)
 
 /**
  * _atoi - converts to a string
- * @s: the string.
+ * @x: the string.
  * Return: int.
  */
-int _atoi(char *s)
+int _atoi(char *x)
 {
 	unsigned int counting = 0, sizing = 0, input = 0, pointer = 1, b = 1, a;
 
-	while (*(s + counting) != '\0')
+	while (*(x + counting) != '\0')
 	{
-		if (sizing > 0 && (*(s + counting) < '0' || *(s + counting) > '9'))
+		if (sizing > 0 && (*(x + counting) < '0' || *(x + counting) > '9'))
 			break;
 
-		if (*(s + counting) == '-')
+		if (*(x + counting) == '-')
 			pointer *= -1;
 
-		if ((*(s + counting) >= '0') && (*(s + counting) <= '9'))
+		if ((*(x + counting) >= '0') && (*(x + counting) <= '9'))
 		{
 			if (sizing > 0)
 				b *= 10;
@@ -92,7 +92,7 @@ int _atoi(char *s)
 
 	for (a = counting - sizing; a < counting; a++)
 	{
-		input = input + ((*(s + a) - 48) * b);
+		input = input + ((*(x + a) - 48) * b);
 		b /= 10;
 	}
 	return (input * pointer);

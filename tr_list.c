@@ -6,7 +6,7 @@
  * @sep: holds the separator.
  * Return: address.
  */
-sep_list *add_sep_node_end(sep_list **head, char sep)
+sep_list *add_sep_node_end(sep_list **start, char separate)
 {
 	sep_list *old;
 	sep_list *temperature;
@@ -15,13 +15,13 @@ sep_list *add_sep_node_end(sep_list **head, char sep)
 	if (old == NULL)
 		return (NULL);
 
-	old->separator = sep;
+	old->separator = separate;
 	old->next = NULL;
-	temperature = *head;
+	temperature = *start;
 
 	if (temperature == NULL)
 	{
-		*head = old;
+		*start = old;
 	}
 	else
 	{
@@ -30,38 +30,38 @@ sep_list *add_sep_node_end(sep_list **head, char sep)
 		temperature->next = old;
 	}
 
-	return (*head);
+	return (*start);
 }
 
 /**
  * free_sep_list - used to free the list
- * @head: the start of the list
+ * @start: the start of the list
  * Return: 0
  */
-void free_sep_list(sep_list **head)
+void free_sep_list(sep_list **start)
 {
 	sep_list *temperature;
 	sep_list *current;
 
-	if (head != NULL)
+	if (start != NULL)
 	{
-		current = *head;
+		current = *start;
 		while ((temperature = current) != NULL)
 		{
 			current = current->next;
 			free(temperature);
 		}
-		*head = NULL;
+		*start = NULL;
 	}
 }
 
 /**
  * add_line_node_end - used for addition of command
- * @head: start of the list
- * @line: the cmd that has the line.
+ * @start: start of the list
+ * @str: the cmd that has the line.
  * Return: address
  */
-line_list *add_line_node_end(line_list **head, char *line)
+line_list *add_line_node_end(line_list **start, char *str)
 {
 	line_list *old, *temperature;
 
@@ -69,13 +69,13 @@ line_list *add_line_node_end(line_list **head, char *line)
 	if (old == NULL)
 		return (NULL);
 
-	old->line = line;
+	old->line = str;
 	old->next = NULL;
-	temperature = *head;
+	temperature = *start;
 
 	if (temperature == NULL)
 	{
-		*head = old;
+		*start = old;
 	}
 	else
 	{
@@ -84,27 +84,27 @@ line_list *add_line_node_end(line_list **head, char *line)
 		temperature->next = old;
 	}
 
-	return (*head);
+	return (*start);
 }
 
 /**
  * free_line_list - used to free the line
- * @head: start of the list
+ * @start: start of the list
  * Return: 0
  */
-void free_line_list(line_list **head)
+void free_line_list(line_list **start)
 {
 	line_list *temperature;
 	line_list *current;
 
-	if (head != NULL)
+	if (start != NULL)
 	{
-		current = *head;
+		current = *start;
 		while ((temperature = current) != NULL)
 		{
 			current = current->next;
 			free(temperature);
 		}
-		*head = NULL;
+		*start = NULL;
 	}
 }

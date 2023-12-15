@@ -2,45 +2,45 @@
 
 /**
  * bring_line - used to  assign a line to a character
- * @lineptr: used to store the input
- * @buffer: the string called
- * @n: the line size
- * @j: the buffer
+ * @linepointer: used to store the input
+ * @buf: the string called
+ * @b: the line size
+ * @c: the buffer
  */
-void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
+void bring_line(char **linepointer, size_t *b, char *buf, size_t c)
 {
 
-	if (*lineptr == NULL)
+	if (*linepointer == NULL)
 	{
-		if  (j > BUFSIZE)
-			*n = j;
+		if  (c > BUFSIZE)
+			*b = c;
 
 		else
-			*n = BUFSIZE;
-		*lineptr = buffer;
+			*b = BUFSIZE;
+		*linepointer = buf;
 	}
-	else if (*n < j)
+	else if (*b < c)
 	{
-		if (j > BUFSIZE)
-			*n = j;
+		if (c > BUFSIZE)
+			*b = c;
 		else
-			*n = BUFSIZE;
-		*lineptr = buffer;
+			*b = BUFSIZE;
+		*linepointer = buf;
 	}
 	else
 	{
-		_strcpy(*lineptr, buffer);
-		free(buffer);
+		_strcpy(*linepointer, buf);
+		free(buf);
 	}
 }
 /**
  * get_line - used to read input
- * @lineptr: where it is stored
- * @n: klength of the line input
- * @stream: where to read from
+ * @linepointer: where it is stored
+ * @b: klength of the line input
+ * @see: where to read from
  * Return: no of bytes
  */
-ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
+ssize_t get_line(char **linepointer, size_t *x, FILE *see)
 {
 	int a;
 	static ssize_t userinput;
@@ -49,7 +49,7 @@ ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 	char b = 'z';
 
 	if (userinput == 0)
-		fflush(stream);
+		fflush(see);
 	else
 		return (-1);
 	userinput = 0;
@@ -76,7 +76,7 @@ ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 		userinput++;
 	}
 	buffers[userinput] = '\0';
-	bring_line(lineptr, n, buffers, userinput);
+	bring_line(linepointer, x, buffers, userinput);
 	retvalue = userinput;
 	if (a != 0)
 		userinput = 0;

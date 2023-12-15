@@ -7,11 +7,11 @@
  */
 void free_data(d_shell *datashel)
 {
-	unsigned int i;
+	unsigned int x;
 
-	for (i = 0; datashel->_environ[i]; i++)
+	for (x = 0; datashel->_environ[x]; x++)
 	{
-		free(datashel->_environ[i]);
+		free(datashel->_environ[x]);
 	}
 
 	free(datashel->_environ);

@@ -3,21 +3,21 @@
 
 /**
  * rev_string - str reverse
- * @s: str inp
+ * @string: str inp
  * Return: always 0
  */
-void rev_string(char *s)
+void rev_string(char *string)
 {
 	int count = 0, k, l;
 	char *str, temp;
 
 	while (count >= 0)
 	{
-		if (s[count] == '\0')
+		if (string[count] == '\0')
 			break;
 		count++;
 	}
-	str = s;
+	str = string;
 
 	for (k = 0; k < (count - 1); k++)
 	{

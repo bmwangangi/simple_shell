@@ -1,77 +1,77 @@
 #include "main.h"
 
 /**
- * without_comment - deletes comments from the input
+ * without_comment - removes all the comments from the input
  *
- * @in: input string
- * Return: input without comments
+ * @in: the string to input
+ * Return: no comments
  */
 char *without_comment(char *in)
 {
-	int i, up_to;
+	int a, where;
 
-	up_to = 0;
-	for (i = 0; in[i]; i++)
+	where = 0;
+	for (a = 0; in[a]; a++)
 	{
-		if (in[i] == '#')
+		if (in[a] == '#')
 		{
-			if (i == 0)
+			if (a == 0)
 			{
 				free(in);
 				return (NULL);
 			}
 
-			if (in[i - 1] == ' ' || in[i - 1] == '\t' || in[i - 1] == ';')
-				up_to = i;
+			if (in[a - 1] == ' ' || in[a - 1] == '\t' || in[a - 1] == ';')
+				where = a;
 		}
 	}
 
-	if (up_to != 0)
+	if (where != 0)
 	{
-		in = _realloc(in, i, up_to + 1);
-		in[up_to] = '\0';
+		in = _realloc(in, a, where + 1);
+		in[where] = '\0';
 	}
 
 	return (in);
 }
 
 /**
- * shell_loop - Loop of shell
- * @datash: data relevant (av, input, args)
+ * shell_loop - the looping of the shell
+ * @datash: the data holding the infomation
  *
- * Return: no return.
+ * Return: 0
  */
 void shell_loop(data_shell *datash)
 {
-	int loop, i_eof;
-	char *input;
+	int looping, where;
+	char *insert;
 
-	loop = 1;
-	while (loop == 1)
+	looping = 1;
+	while (looping == 1)
 	{
 		write(STDIN_FILENO, "^-^ ", 4);
-		input = read_line(&i_eof);
-		if (i_eof != -1)
+		insert = read_line(&where);
+		if (where != -1)
 		{
-			input = without_comment(input);
-			if (input == NULL)
+			insert = without_comment(insert);
+			if (insert == NULL)
 				continue;
 
-			if (check_syntax_error(datash, input) == 1)
+			if (check_syntax_error(datash, insert) == 1)
 			{
 				datash->status = 2;
-				free(input);
+				free(insert);
 				continue;
 			}
-			input = rep_var(input, datash);
-			loop = split_commands(datash, input);
+			insert = rep_var(insert, datash);
+			looping = split_commands(datash, insert);
 			datash->counter += 1;
-			free(input);
+			free(insert);
 		}
 		else
 		{
-			loop = 0;
-			free(input);
+			looping = 0;
+			free(insert);
 		}
 	}
 }

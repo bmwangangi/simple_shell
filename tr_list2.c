@@ -2,59 +2,58 @@
 
 /**
  * add_rvar_node - adds a variable at the end
- * of a r_var list.
- * @head: head of the linked list.
- * @lvar: length of the variable.
- * @val: value of the variable.
- * @lval: length of the value.
- * Return: address of the head.
+ * @head: start of the list
+ * @lvar: len of the var
+ * @val: the var value.
+ * @lval: len of the variable
+ * Return: address.
  */
 r_var *add_rvar_node(r_var **head, int lvar, char *val, int lval)
 {
-	r_var *new, *temp;
+	r_var *old, *temperature;
 
-	new = malloc(sizeof(r_var));
-	if (new == NULL)
+	old = malloc(sizeof(r_var));
+	if (old == NULL)
 		return (NULL);
 
-	new->len_var = lvar;
-	new->val = val;
-	new->len_val = lval;
+	old->len_var = lvar;
+	old->val = val;
+	old->len_val = lval;
 
-	new->next = NULL;
-	temp = *head;
+	old->next = NULL;
+	temperature = *head;
 
-	if (temp == NULL)
+	if (temperature == NULL)
 	{
-		*head = new;
+		*head = old;
 	}
 	else
 	{
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new;
+		while (temperature->next != NULL)
+			temperature = temperature->next;
+		temperature->next = old;
 	}
 
 	return (*head);
 }
 
 /**
- * free_rvar_list - frees a r_var list
- * @head: head of the linked list.
- * Return: no return.
+ * free_rvar_list - used to free the variable list
+ * @head: start of the list
+ * Return: 0
  */
 void free_rvar_list(r_var **head)
 {
-	r_var *temp;
-	r_var *curr;
+	r_var *temperature;
+	r_var *current;
 
 	if (head != NULL)
 	{
-		curr = *head;
-		while ((temp = curr) != NULL)
+		current = *head;
+		while ((temperature = current) != NULL)
 		{
-			curr = curr->next;
-			free(temp);
+			current = current->next;
+			free(temperature);
 		}
 		*head = NULL;
 	}

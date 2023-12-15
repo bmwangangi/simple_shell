@@ -1,100 +1,99 @@
 #include "main.h"
 
 /**
- * get_len - Get the lenght of a number.
- * @n: type int number.
- * Return: Lenght of a number.
+ * get_len - used to get len
+ * @n: data type integer
+ * Return: len of no
  */
 int get_len(int n)
 {
-	unsigned int n1;
-	int lenght = 1;
+	unsigned int no;
+	int len = 1;
 
 	if (n < 0)
 	{
-		lenght++;
-		n1 = n * -1;
+		len++;
+		no = n * -1;
 	}
 	else
 	{
-		n1 = n;
+		no = n;
 	}
-	while (n1 > 9)
+	while (no > 9)
 	{
-		lenght++;
-		n1 = n1 / 10;
+		len++;
+		no = no / 10;
 	}
 
-	return (lenght);
+	return (len);
 }
 /**
- * aux_itoa - function converts int to string.
- * @n: type int number
- * Return: String.
+ * aux_itoa - for conversion to string
+ * @n: interger no
+ * Return: Str.
  */
 char *aux_itoa(int n)
 {
-	unsigned int n1;
-	int lenght = get_len(n);
-	char *buffer;
+	unsigned int no;
+	int len = get_len(n);
+	char *buf;
 
-	buffer = malloc(sizeof(char) * (lenght + 1));
-	if (buffer == 0)
+	buf = malloc(sizeof(char) * (len + 1));
+	if (buf == 0)
 		return (NULL);
 
-	*(buffer + lenght) = '\0';
+	*(buf + len) = '\0';
 
 	if (n < 0)
 	{
-		n1 = n * -1;
-		buffer[0] = '-';
+		no = n * -1;
+		buf[0] = '-';
 	}
 	else
 	{
-		n1 = n;
+		no = n;
 	}
 
-	lenght--;
+	len--;
 	do {
-		*(buffer + lenght) = (n1 % 10) + '0';
-		n1 = n1 / 10;
-		lenght--;
+		*(buf + len) = (no % 10) + '0';
+		no = no / 10;
+		len--;
 	}
-	while (n1 > 0)
-		;
-	return (buffer);
+	while (no > 0);
+	return (buf);
 }
 
 /**
- * _atoi - converts a string to an integer.
- * @s: input string.
- * Return: integer.
+ * _atoi - converts to a string
+ * @s: the string.
+ * Return: int.
  */
 int _atoi(char *s)
 {
-	unsigned int count = 0, size = 0, oi = 0, pn = 1, m = 1, i;
+	unsigned int counting = 0, sizing = 0, input = 0, pointer = 1, b = 1, a;
 
-	while (*(s + count) != '\0')
+	while (*(s + counting) != '\0')
 	{
-		if (size > 0 && (*(s + count) < '0' || *(s + count) > '9'))
+		if (sizing > 0 && (*(s + counting) < '0' || *(s + counting) > '9'))
 			break;
 
-		if (*(s + count) == '-')
-			pn *= -1;
+		if (*(s + counting) == '-')
+			pointer *= -1;
 
-		if ((*(s + count) >= '0') && (*(s + count) <= '9'))
+		if ((*(s + counting) >= '0') && (*(s + counting) <= '9'))
 		{
-			if (size > 0)
-				m *= 10;
-			size++;
+			if (sizing > 0)
+				b *= 10;
+			sizing++;
 		}
-		count++;
+		counting++;
 	}
 
-	for (i = count - size; i < count; i++)
+	for (a = counting - sizing; a < counting; a++)
 	{
-		oi = oi + ((*(s + i) - 48) * m);
-		m /= 10;
+		input = input + ((*(s + a) - 48) * b);
+		b /= 10;
 	}
-	return (oi * pn);
+	return (input * pointer);
 }

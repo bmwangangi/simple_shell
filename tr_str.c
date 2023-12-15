@@ -1,44 +1,44 @@
 #include "main.h"
 
 /**
- * _strcat - concatenate two strings
- * @dest: char pointer the dest of the copied str
- * @src: const char pointer the source of str
- * Return: the dest
+ * _strcat - str concat
+ * @dest: points copied str
+ * @src: points source of str
+ * Return: dest
  */
 char *_strcat(char *dest, const char *src)
 {
-	int i;
-	int j;
+	int k;
+	int l;
 
-	for (i = 0; dest[i] != '\0'; i++)
+	for (k = 0; dest[k] != '\0'; k++)
 		;
 
-	for (j = 0; src[j] != '\0'; j++)
+	for (l = 0; src[l] != '\0'; l++)
 	{
-		dest[i] = src[j];
-		i++;
+		dest[k] = src[k];
+		k++;
 	}
 
-	dest[i] = '\0';
+	dest[k] = '\0';
 	return (dest);
 }
 /**
- * *_strcpy - Copies the string pointed to by src.
- * @dest: Type char pointer the dest of the copied str
- * @src: Type char pointer the source of str
- * Return: the dest.
+ * *_strcpy - Copies str
+ * @dest: points copied str
+ * @src: points source of str
+ * Return: dest.
  */
 char *_strcpy(char *dest, char *src)
 {
 
-	size_t a;
+	size_t r;
 
-	for (a = 0; src[a] != '\0'; a++)
+	for (r = 0; src[r] != '\0'; r++)
 	{
-		dest[a] = src[a];
+		dest[r] = src[r];
 	}
-	dest[a] = '\0';
+	dest[r] = '\0';
 
 	return (dest);
 }
@@ -50,50 +50,50 @@ char *_strcpy(char *dest, char *src)
  */
 int _strcmp(char *s1, char *s2)
 {
-	int i;
+	int k;
 
-	for (i = 0; s1[i] == s2[i] && s1[i]; i++)
+	for (k = 0; s1[k] == s2[k] && s1[k]; k++)
 		;
 
-	if (s1[i] > s2[i])
+	if (s1[k] > s2[k])
 		return (1);
-	if (s1[i] < s2[i])
+	if (s1[k] < s2[k])
 		return (-1);
 	return (0);
 }
 /**
- * _strchr - locates a character in a string,
- * @s: string.
- * @c: character.
- * Return: the pointer to the first occurrence of the character c.
+ * _strchr - char location
+ * @c: char
+ * @s: str
+ * Return: pointer is 1st occurrence
  */
 char *_strchr(char *s, char c)
 {
-	unsigned int i = 0;
+	unsigned int k = 0;
 
-	for (; *(s + i) != '\0'; i++)
-		if (*(s + i) == c)
-			return (s + i);
-	if (*(s + i) == c)
-		return (s + i);
+	for (; *(s + k) != '\0'; k++)
+		if (*(s + k) == c)
+			return (s + k);
+	if (*(s + k) == c)
+		return (s + k);
 	return ('\0');
 }
 /**
- * _strspn - gets the length of a prefix substring.
- * @s: initial segment.
- * @accept: accepted bytes.
- * Return: the number of accepted bytes.
+ * _strspn - len of substring
+ * @s: prev subline
+ * @accept: bytes acc
+ * Return: count of acc bytes
  */
 int _strspn(char *s, char *accept)
 {
-	int i, j, bool;
+	int k, l, bool;
 
-	for (i = 0; *(s + i) != '\0'; i++)
+	for (k = 0; *(s + k) != '\0'; k++)
 	{
 		bool = 1;
-		for (j = 0; *(accept + j) != '\0'; j++)
+		for (l = 0; *(accept + l) != '\0'; l++)
 		{
-			if (*(s + i) == *(accept + j))
+			if (*(s + k) == *(accept + l))
 			{
 				bool = 0;
 				break;
@@ -102,5 +102,5 @@ int _strspn(char *s, char *accept)
 		if (bool == 1)
 			break;
 	}
-	return (i);
+	return (k);
 }

@@ -39,7 +39,7 @@ char *strcat_cd(d_shell *datashel, char *message, char *err, char *ver_string)
 }
 
 /**
- * error_get_cd - Generates an error message .
+ * error_get_cd - Generates an error message for the 'cd' command in the get_cd function.
  * @datashel: hell data containing relevant information.
  * Return: Error message
  */
@@ -110,7 +110,7 @@ char *error_not_found(d_shell *datashel)
 }
 
 /**
- * error_exit_shell - Generates a generic error message
+ * error_exit_shell - Generates a generic error message for 'exit' in the get_exit function.
  * @datashel: Shell data containing relevant information.
  * Return: Error message
  */

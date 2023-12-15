@@ -34,10 +34,9 @@ void set_data(d_shell *datashel, char **av)
 	datashel->status = 0;
 	datashel->counter = 1;
 
-	for (a = 0; environ[a]; a++)
-	{
-		datashel->_environ = malloc(sizeof(char *) * (a + 1));
-	}
+	for (a = 0; environ[a]; a++);
+
+	datashel->_environ = malloc(sizeof(char *) * (a + 1));
 
 	for (a = 0; environ[a]; a++)
 	{

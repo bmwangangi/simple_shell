@@ -49,8 +49,7 @@ void set_env(char *joe, char *val, d_shell *datashel)
 		free(variable_env);
 	}
 
-	datashel->_environ = _reallocdp(datashel->_environ, a,
-			sizeof(char *) * (a + 2));
+	datashel->_environ = _reallocdp(datashel->_environ, a, sizeof(char *) * (a + 2));
 	datashel->_environ[a] = copy_info(joe, val);
 	datashel->_environ[a + 1] = NULL;
 }
@@ -76,7 +75,7 @@ int _setenv(d_shell *datashel)
 
 /**
  * _unsetenv - used to delete env var
- * @datashel: The data holding the infoMATION OF THE FILE
+ * datashel: the data holding the info
  * Return: 1
  */
 int _unsetenv(d_shell *datashel)

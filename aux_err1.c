@@ -16,7 +16,7 @@ char *error_env(d_shell *datashel)
 	message = ": Error when trying to add/remove from env\n";
 	totallength = _strlen(datashel->av[0]) + _strlen(counter_str);
 	totallength += _strlen(datashel->args[0]) + _strlen(message) + 4;
-	errormessage = malloc(sizeof(char) * (totallength + 1));
+	errormessage= malloc(sizeof(char) * (totallength + 1));
 	if (errormessage == 0)
 	{
 		free(errormessage);

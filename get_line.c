@@ -36,7 +36,7 @@ void bring_line(char **linepointer, size_t *b, char *buf, size_t c)
 /**
  * get_line - used to read input
  * @linepointer: where it is stored
- * @x: klength of the line input
+ * @b: klength of the line input
  * @see: where to read from
  * Return: no of bytes
  */

@@ -59,7 +59,8 @@ char *aux_itoa(int a)
 		*(buf + len) = (no % 10) + '0';
 		no = no / 10;
 		len--;
-	} while (no > 0);
+	}
+	while (no > 0);
 	return (buf);
 }
 

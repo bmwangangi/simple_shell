@@ -2,21 +2,20 @@
 
 /**
  * exec_line - finds built commands
- *
- * @datash: data holding the onfomation
+ * @datashel: data holding the onfomation
  * Return: 1
  */
-int exec_line(data_shell *datash)
+int exec_line(d_shell *datashel)
 {
-	int (*builtin)(data_shell *datash);
+	int (*builtin)(d_shell *datashel);
 
-	if (datash->args[0] == NULL)
+	if (datashel->args[0] == NULL)
 		return (1);
 
-	builtin = get_builtin(datash->args[0]);
+	builtin = get_builtin(datashel->args[0]);
 
 	if (builtin != NULL)
-		return (builtin(datash));
+		return (builtin(datashel));
 
-	return (cmd_exec(datash));
+	return (cmd_exec(datashel));
 }

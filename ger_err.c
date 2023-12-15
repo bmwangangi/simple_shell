@@ -2,30 +2,30 @@
 
 /**
  * get_error - used to get the error
- * @datash: the data containing the infomatuion
- * @eval: the value 
+ * @datashel: the data containing the infomatuion
+ * @evaluate: the value 
  * Return: error
  */
-int get_error(data_shell *datash, int eval)
+int get_error(d_shell *datashel, int evaluate)
 {
 	char *problem;
 
-	switch (eval)
+	switch (evaluate)
 	{
 	case -1:
-		problem = error_env(datash);
+		problem = error_env(datashel);
 		break;
 	case 126:
-		problem = error_path_126(datash);
+		problem = error_path_126(datashel);
 		break;
 	case 127:
-		problem = error_not_found(datash);
+		problem = error_not_found(datashel);
 		break;
 	case 2:
-		if (_strcmp("exit", datash->args[0]) == 0)
-			problem = error_exit_shell(datash);
-		else if (_strcmp("cd", datash->args[0]) == 0)
-			problem = error_get_cd(datash);
+		if (_strcmp("exit", datashel->args[0]) == 0)
+			problem = error_exit_shell(datashel);
+		else if (_strcmp("cd", datashel->args[0]) == 0)
+			problem = error_get_cd(datashel);
 		break;
 	}
 
@@ -35,6 +35,6 @@ int get_error(data_shell *datash, int eval)
 		free(problem);
 	}
 
-	datash->status = eval;
-	return (eval);
+	datashel->status = evaluate;
+	return (evaluate);
 }

@@ -2,22 +2,22 @@
 
 /**
  * is_cdir - checks if ":" this is in the directory
- * @path: the pointer to data
- * @i: pointer of index
+ * @way: the pointer to data
+ * @a: pointer of index
  * Return: 1
  */
-int is_cdir(char *path, int *i)
+int is_cdir(char *way, int *a)
 {
-	if (path[*i] == ':')
+	if (way[*a] == ':')
 		return (1);
 
-	while (path[*i] != ':' && path[*i])
+	while (way[*a] != ':' && way[*a])
 	{
-		*i += 1;
+		*a += 1;
 	}
 
-	if (path[*i])
-		*i += 1;
+	if (way[*a])
+		*a += 1;
 
 	return (0);
 }
@@ -26,16 +26,16 @@ int is_cdir(char *path, int *i)
  * _which - used for commannd location
  *
  * @cmd: the name of the command
- * @_environ: the variable representing enviroment
+ * @_environment: the variable representing enviroment
  * Return: the location of the command
  */
-char *_which(char *cmd, char **_environ)
+char *_which(char *cmd, char **_environment)
 {
 	char *fullpath, *pointer_path, *tkn_path, *directory;
 	int length_dir, length_cmd, a;
 	struct stat st;
 
-	fullpath = _getenv("PATH", _environ);
+	fullpath = _getenv("PATH", _environment);
 	if (fullpath)
 	{
 		pointer_path = _strdup(fullpath);
@@ -75,16 +75,16 @@ char *_which(char *cmd, char **_environ)
 /**
  * is_executable - used to check if a file is executable
  *
- * @datash: the data with the information
+ * @datashel: the data with the information
  * Return: 0
  */
-int is_executable(data_shell *datash)
+int is_executable(d_shell *datashel)
 {
 	struct stat st;
 	int a;
 	char *insert;
 
-	insert = datash->args[0];
+	insert = datashel->args[0];
 	for (a = 0; insert[a]; a++)
 	{
 		if (insert[a] == '.')
@@ -113,40 +113,40 @@ int is_executable(data_shell *datash)
 	{
 		return (a);
 	}
-	get_error(datash, 127);
+	get_error(datashel, 127);
 	return (-1);
 }
 
 /**
  * check_error_cmd - verifies user access
  *
- * @dir: our destination dir
- * @datash: the data containing the infomation
+ * @directory: our destination dir
+ * @datashel: the data containing the infomation
  * Return: 1
  */
-int check_error_cmd(char *dir, data_shell *datash)
+int check_error_cmd(char *directory, d_shell *datashel)
 {
-	if (dir == NULL)
+	if (directory == NULL)
 	{
-		get_error(datash, 127);
+		get_error(datashel, 127);
 		return (1);
 	}
 
-	if (_strcmp(datash->args[0], dir) != 0)
+	if (_strcmp(datashel->args[0], directory) != 0)
 	{
-		if (access(dir, X_OK) == -1)
+		if (access(directory, X_OK) == -1)
 		{
-			get_error(datash, 126);
-			free(dir);
+			get_error(datashel, 126);
+			free(directory);
 			return (1);
 		}
-		free(dir);
+		free(directory);
 	}
 	else
 	{
-		if (access(datash->args[0], X_OK) == -1)
+		if (access(datashel->args[0], X_OK) == -1)
 		{
-			get_error(datash, 126);
+			get_error(datashel, 126);
 			return (1);
 		}
 	}
@@ -157,10 +157,10 @@ int check_error_cmd(char *dir, data_shell *datash)
 /**
  * cmd_exec - used to execute
  *
- * @datash: the data containing info
+ * @datashel: the data containing info
  * Return: 1
  */
-int cmd_exec(data_shell *datash)
+int cmd_exec(d_shell *datashel)
 {
 	pid_t pd;
 	pid_t wpd;
@@ -169,13 +169,13 @@ int cmd_exec(data_shell *datash)
 	char *directory;
 	(void) wpd;
 
-	executionflag = is_executable(datash);
+	executionflag = is_executable(datashel);
 	if (executionflag == -1)
 		return (1);
 	if (executionflag == 0)
 	{
-		directory = _which(datash->args[0], datash->_environ);
-		if (check_error_cmd(directory, datash) == 1)
+		directory = _which(datashel->args[0], datashel->_environ);
+		if (check_error_cmd(directory, datashel) == 1)
 			return (1);
 	}
 
@@ -183,14 +183,14 @@ int cmd_exec(data_shell *datash)
 	if (pd == 0)
 	{
 		if (executionflag == 0)
-			directory = _which(datash->args[0], datash->_environ);
+			directory = _which(datashel->args[0], datashel->_environ);
 		else
-			directory = datash->args[0];
-		execve(directory + executionflag, datash->args, datash->_environ);
+			directory = datashel->args[0];
+		execve(directory + executionflag, datashel->args, datashel->_environ);
 	}
 	else if (pd < 0)
 	{
-		perror(datash->av[0]);
+		perror(datashel->av[0]);
 		return (1);
 	}
 	else
@@ -200,6 +200,6 @@ int cmd_exec(data_shell *datash)
 		} while (!WIFEXITED(processstate) && !WIFSIGNALED(processstate));
 	}
 
-	datash->status = processstate / 256;
+	datashel->status = processstate / 256;
 	return (1);
 }

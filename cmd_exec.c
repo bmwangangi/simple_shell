@@ -1,10 +1,10 @@
 #include "main.h"
 
 /**
- * is_cdir - checks ":" if is in the current directory.
- * @path: type char pointer char.
- * @i: type int pointer of index.
- * Return: 1 if the path is searchable in the cd, 0 otherwise.
+ * is_cdir - checks if ":" this is in the directory
+ * @path: the pointer to data
+ * @i: pointer of index
+ * Return: 1
  */
 int is_cdir(char *path, int *i)
 {
@@ -23,45 +23,45 @@ int is_cdir(char *path, int *i)
 }
 
 /**
- * _which - locates a command
+ * _which - used for commannd location
  *
- * @cmd: command name
- * @_environ: environment variable
- * Return: location of the command.
+ * @cmd: the name of the command
+ * @_environ: the variable representing enviroment
+ * Return: the location of the command
  */
 char *_which(char *cmd, char **_environ)
 {
-	char *path, *ptr_path, *token_path, *dir;
-	int len_dir, len_cmd, i;
+	char *fullpath, *pointer_path, *tkn_path, *directory;
+	int length_dir, length_cmd, a;
 	struct stat st;
 
-	path = _getenv("PATH", _environ);
-	if (path)
+	fullpath = _getenv("PATH", _environ);
+	if (fullpath)
 	{
-		ptr_path = _strdup(path);
-		len_cmd = _strlen(cmd);
-		token_path = _strtok(ptr_path, ":");
-		i = 0;
-		while (token_path != NULL)
+		pointer_path = _strdup(fullpath);
+		length_cmd = _strlen(cmd);
+		tkn_path = _strtok(pointer_path, ":");
+		a = 0;
+		while (tkn_path != NULL)
 		{
-			if (is_cdir(path, &i))
+			if (is_cdir(fullpath, &a))
 				if (stat(cmd, &st) == 0)
 					return (cmd);
-			len_dir = _strlen(token_path);
-			dir = malloc(len_dir + len_cmd + 2);
-			_strcpy(dir, token_path);
-			_strcat(dir, "/");
-			_strcat(dir, cmd);
-			_strcat(dir, "\0");
-			if (stat(dir, &st) == 0)
+			length_dir = _strlen(tkn_path);
+			directory = malloc(length_dir + length_cmd + 2);
+			_strcpy(directory, tkn_path);
+			_strcat(directory, "/");
+			_strcat(directory, cmd);
+			_strcat(directory, "\0");
+			if (stat(directory, &st) == 0)
 			{
-				free(ptr_path);
-				return (dir);
+				free(pointer_path);
+				return (directory);
 			}
-			free(dir);
-			token_path = _strtok(NULL, ":");
+			free(directory);
+			tkn_path = _strtok(NULL, ":");
 		}
-		free(ptr_path);
+		free(pointer_path);
 		if (stat(cmd, &st) == 0)
 			return (cmd);
 		return (NULL);
@@ -73,56 +73,56 @@ char *_which(char *cmd, char **_environ)
 }
 
 /**
- * is_executable - determines if is an executable
+ * is_executable - used to check if a file is executable
  *
- * @datash: data structure
- * Return: 0 if is not an executable, other number if it does
+ * @datash: the data with the information
+ * Return: 0
  */
 int is_executable(data_shell *datash)
 {
 	struct stat st;
-	int i;
-	char *input;
+	int a;
+	char *insert;
 
-	input = datash->args[0];
-	for (i = 0; input[i]; i++)
+	insert = datash->args[0];
+	for (a = 0; insert[a]; a++)
 	{
-		if (input[i] == '.')
+		if (insert[a] == '.')
 		{
-			if (input[i + 1] == '.')
+			if (insert[a + 1] == '.')
 				return (0);
-			if (input[i + 1] == '/')
+			if (insert[a + 1] == '/')
 				continue;
 			else
 				break;
 		}
-		else if (input[i] == '/' && i != 0)
+		else if (insert[a] == '/' && a != 0)
 		{
-			if (input[i + 1] == '.')
+			if (insert[a + 1] == '.')
 				continue;
-			i++;
+			a++;
 			break;
 		}
 		else
 			break;
 	}
-	if (i == 0)
+	if (a == 0)
 		return (0);
 
-	if (stat(input + i, &st) == 0)
+	if (stat(insert + a, &st) == 0)
 	{
-		return (i);
+		return (a);
 	}
 	get_error(datash, 127);
 	return (-1);
 }
 
 /**
- * check_error_cmd - verifies if user has permissions to access
+ * check_error_cmd - verifies user access
  *
- * @dir: destination directory
- * @datash: data structure
- * Return: 1 if there is an error, 0 if not
+ * @dir: our destination dir
+ * @datash: the data containing the infomation
+ * Return: 1
  */
 int check_error_cmd(char *dir, data_shell *datash)
 {
@@ -155,38 +155,38 @@ int check_error_cmd(char *dir, data_shell *datash)
 }
 
 /**
- * cmd_exec - executes command lines
+ * cmd_exec - used to execute
  *
- * @datash: data relevant (args and input)
- * Return: 1 on success.
+ * @datash: the data containing info
+ * Return: 1
  */
 int cmd_exec(data_shell *datash)
 {
 	pid_t pd;
 	pid_t wpd;
-	int state;
-	int exec;
-	char *dir;
+	int processstate;
+	int executionflag;
+	char *directory;
 	(void) wpd;
 
-	exec = is_executable(datash);
-	if (exec == -1)
+	executionflag = is_executable(datash);
+	if (executionflag == -1)
 		return (1);
-	if (exec == 0)
+	if (executionflag == 0)
 	{
-		dir = _which(datash->args[0], datash->_environ);
-		if (check_error_cmd(dir, datash) == 1)
+		directory = _which(datash->args[0], datash->_environ);
+		if (check_error_cmd(directory, datash) == 1)
 			return (1);
 	}
 
 	pd = fork();
 	if (pd == 0)
 	{
-		if (exec == 0)
-			dir = _which(datash->args[0], datash->_environ);
+		if (executionflag == 0)
+			directory = _which(datash->args[0], datash->_environ);
 		else
-			dir = datash->args[0];
-		execve(dir + exec, datash->args, datash->_environ);
+			directory = datash->args[0];
+		execve(directory + executionflag, datash->args, datash->_environ);
 	}
 	else if (pd < 0)
 	{
@@ -196,10 +196,10 @@ int cmd_exec(data_shell *datash)
 	else
 	{
 		do {
-			wpd = waitpid(pd, &state, WUNTRACED);
-		} while (!WIFEXITED(state) && !WIFSIGNALED(state));
+			wpd = waitpid(pd, &processstate, WUNTRACED);
+		} while (!WIFEXITED(processstate) && !WIFSIGNALED(processstate));
 	}
 
-	datash->status = state / 256;
+	datash->status = processstate / 256;
 	return (1);
 }

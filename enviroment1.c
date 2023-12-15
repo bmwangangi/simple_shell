@@ -1,77 +1,71 @@
 #include "main.h"
 
 /**
- * cmp_env_name - compares env variables names
- * with the name passed.
- * @nenv: name of the environment variable
- * @name: name passed
+ * cmp_env_name - used for comparison for enviroment variables
+ * @nenv: name of the variable
+ * @name: the one passed
  *
- * Return: 0 if are not equal. Another value if they are.
+ * Return: 0
  */
 int cmp_env_name(const char *nenv, const char *name)
 {
-	int i;
+	int a;
 
-	for (i = 0; nenv[i] != '='; i++)
+	for (a = 0; nenv[a] != '='; a++)
 	{
-		if (nenv[i] != name[i])
+		if (nenv[a] != name[a])
 		{
 			return (0);
 		}
 	}
 
-	return (i + 1);
+	return (a + 1);
 }
 
 /**
- * _getenv - get an environment variable
- * @name: name of the environment variable
- * @_environ: environment variable
+ * _getenv - usedto get the enviroment variable
+ * @name: name of the variable
+ * @_environ: env variable
  *
- * Return: value of the environment variable if is found.
- * In other case, returns NULL.
+ * Return: value of the env variable
  */
 char *_getenv(const char *name, char **_environ)
 {
-	char *ptr_env;
-	int i, mov;
+	char *print_env;
+	int a, move;
 
-	/* Initialize ptr_env value */
-	ptr_env = NULL;
-	mov = 0;
-	/* Compare all environment variables */
-	/* environ is declared in the header file */
-	for (i = 0; _environ[i]; i++)
+	print_env = NULL;
+	move = 0;
+
+	for (a = 0; _environ[a]; a++)
 	{
-		/* If name and env are equal */
-		mov = cmp_env_name(_environ[i], name);
-		if (mov)
+		move = cmp_env_name(_environ[a], name);
+		if (move)
 		{
-			ptr_env = _environ[i];
+			print_env = _environ[a];
 			break;
 		}
 	}
 
-	return (ptr_env + mov);
+	return (print_env + move);
 }
 
 /**
- * _env - prints the evironment variables
+ * _env - used to print the variable for the enviroment
  *
- * @datash: data relevant.
- * Return: 1 on success.
+ * @datash: the data with information
+ * Return: 1
  */
 int _env(data_shell *datash)
 {
-	int i, j;
+	int a, b;
 
-	for (i = 0; datash->_environ[i]; i++)
+	for (a = 0; datash->_environ[a]; a++)
 	{
 
-		for (j = 0; datash->_environ[i][j]; j++)
-			;
+		for (b = 0; datash->_environ[a][b]; b++);
 
-		write(STDOUT_FILENO, datash->_environ[i], j);
+		write(STDOUT_FILENO, datash->_environ[a], b);
 		write(STDOUT_FILENO, "\n", 1);
 	}
 	datash->status = 0;

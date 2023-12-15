@@ -1,38 +1,38 @@
 #include "main.h"
 
 /**
- * cd_shell - changes current directory
+ * cd_shell - used for changing directories
  *
- * @datash: data relevant
- * Return: 1 on success
+ * @datash: the data available
+ * Return: 1
  */
 int cd_shell(data_shell *datash)
 {
-	char *dir;
-	int ishome, ishome2, isddash;
+	char *directory;
+	int homevariable, homevariable2, doubledash;
 
-	dir = datash->args[1];
+	directory = datash->args[1];
 
-	if (dir != NULL)
+	if (directory != NULL)
 	{
-		ishome = _strcmp("$HOME", dir);
-		ishome2 = _strcmp("~", dir);
-		isddash = _strcmp("--", dir);
+		homevariable = _strcmp("$HOME", directory);
+		homevariable2 = _strcmp("~", directory);
+		doubledash = _strcmp("--", directory);
 	}
 
-	if (dir == NULL || !ishome || !ishome2 || !isddash)
+	if (directory == NULL || !homevariable || !homevariable2 || !doubledash)
 	{
 		cd_to_home(datash);
 		return (1);
 	}
 
-	if (_strcmp("-", dir) == 0)
+	if (_strcmp("-", directory) == 0)
 	{
 		cd_previous(datash);
 		return (1);
 	}
 
-	if (_strcmp(".", dir) == 0 || _strcmp("..", dir) == 0)
+	if (_strcmp(".", directory) == 0 || _strcmp("..", directory) == 0)
 	{
 		cd_dot(datash);
 		return (1);

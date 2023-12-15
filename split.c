@@ -1,152 +1,148 @@
 #include "main.h"
 
 /**
- * swap_char - swaps | and & for non-printed chars
- *
- * @input: input string
- * @bool: type of swap
- * Return: swapped string
+ * swap_char - | and & swaps for non-prnted char
+ * @input: string inp
+ * @bool: swap type
+ * Return: str swapped
  */
 char *swap_char(char *input, int bool)
 {
-	int i;
+	int j;
 
 	if (bool == 0)
 	{
-		for (i = 0; input[i]; i++)
+		for (j = 0; input[j]; j++)
 		{
-			if (input[i] == '|')
+			if (input[j] == '|')
 			{
-				if (input[i + 1] != '|')
-					input[i] = 16;
+				if (input[j + 1] != '|')
+					input[j] = 16;
 				else
-					i++;
+					j++;
 			}
 
-			if (input[i] == '&')
+			if (input[j] == '&')
 			{
-				if (input[i + 1] != '&')
-					input[i] = 12;
+				if (input[j + 1] != '&')
+					input[j] = 12;
 				else
-					i++;
+					j++;
 			}
 		}
 	}
 	else
 	{
-		for (i = 0; input[i]; i++)
+		for (j = 0; input[j]; j++)
 		{
-			input[i] = (input[i] == 16 ? '|' : input[i]);
-			input[i] = (input[i] == 12 ? '&' : input[i]);
+			input[j] = (input[j] == 16 ? '|' : input[j]);
+			input[j] = (input[j] == 12 ? '&' : input[j]);
 		}
 	}
 	return (input);
 }
 
 /**
- * add_nodes - add separators and command lines in the lists
- *
- * @head_s: head of separator list
- * @head_l: head of command lines list
- * @input: input string
- * Return: no return
+ * add_nodes - add separators $ command lines
+ * @head_s: sep list head
+ * @head_l: cmd lines inp head
+ * @input: str inp
+ * Return: return 0
  */
 void add_nodes(sep_list **head_s, line_list **head_l, char *input)
 {
-	int i;
-	char *line;
+	int j;
+	char *lin;
 
 	input = swap_char(input, 0);
 
-	for (i = 0; input[i]; i++)
+	for (j = 0; input[j]; j++)
 	{
-		if (input[i] == ';')
-			add_sep_node_end(head_s, input[i]);
+		if (input[j] == ';')
+			add_sep_node_end(head_s, input[j]);
 
-		if (input[i] == '|' || input[i] == '&')
+		if (input[j] == '|' || input[j] == '&')
 		{
-			add_sep_node_end(head_s, input[i]);
-			i++;
+			add_sep_node_end(head_s, input[j]);
+			j++;
 		}
 	}
 
-	line = _strtok(input, ";|&");
+	lin = _strtok(input, ";|&");
 	do {
-		line = swap_char(line, 1);
-		add_line_node_end(head_l, line);
-		line = _strtok(NULL, ";|&");
-	} while (line != NULL);
+		lin = swap_char(lin, 1);
+		add_line_node_end(head_l, lin);
+		lin = _strtok(NULL, ";|&");
+	} while (lin != NULL);
 
 }
 
 /**
- * go_next - go to the next command line stored
- *
- * @list_s: separator list
- * @list_l: command line list
- * @datash: data structure
- * Return: no return
+ * go_next - go to stored next cmd line
+ * @list_s: sep list
+ * @list_l: cmd line lst
+ * @datash: data struc
+ * Return: return 0
  */
 void go_next(sep_list **list_s, line_list **list_l, data_shell *datash)
 {
-	int loop_sep;
-	sep_list *ls_s;
-	line_list *ls_l;
+	int loopsep;
+	sep_list *lss;
+	line_list *lsl;
 
-	loop_sep = 1;
-	ls_s = *list_s;
-	ls_l = *list_l;
+	loopsep = 1;
+	lss = *list_s;
+	lsl = *list_l;
 
-	while (ls_s != NULL && loop_sep)
+	while (lss != NULL && loopsep)
 	{
 		if (datash->status == 0)
 		{
-			if (ls_s->separator == '&' || ls_s->separator == ';')
-				loop_sep = 0;
-			if (ls_s->separator == '|')
-				ls_l = ls_l->next, ls_s = ls_s->next;
+			if (lss->separator == '&' || lss->separator == ';')
+				loopsep = 0;
+			if (lss->separator == '|')
+				lsl = lsl->next, lss = lss->next;
 		}
 		else
 		{
-			if (ls_s->separator == '|' || ls_s->separator == ';')
-				loop_sep = 0;
-			if (ls_s->separator == '&')
-				ls_l = ls_l->next, ls_s = ls_s->next;
+			if (lss->separator == '|' || lss->separator == ';')
+				loopsep = 0;
+			if (lss->separator == '&')
+				lsl = lsl->next, lss = lss->next;
 		}
-		if (ls_s != NULL && !loop_sep)
-			ls_s = ls_s->next;
+		if (lss != NULL && !loopsep)
+			lss = lss->next;
 	}
 
-	*list_s = ls_s;
-	*list_l = ls_l;
+	*list_s = lss;
+	*list_l = lsl;
 }
 
 /**
- * split_commands - splits command lines according to
- * the separators ;, | and &, and executes them
- *
- * @datash: data structure
- * @input: input string
- * Return: 0 to exit, 1 to continue
+ * split_commands - splits cmd lines
+ * executes the separators ;, | and &
+ * @datash: data struc
+ * @input: str inp
+ * Return: 0 to quit, 1 to proceed
  */
 int split_commands(data_shell *datash, char *input)
 {
 
-	sep_list *head_s, *list_s;
-	line_list *head_l, *list_l;
+	sep_list *heads, *lists;
+	line_list *headl, *listl;
 	int loop;
 
-	head_s = NULL;
-	head_l = NULL;
+	heads = NULL;
+	headl = NULL;
 
-	add_nodes(&head_s, &head_l, input);
+	add_nodes(&heads, &headl, input);
 
-	list_s = head_s;
-	list_l = head_l;
+	lists = heads;
+	listl = headl;
 
-	while (list_l != NULL)
+	while (listl != NULL)
 	{
-		datash->input = list_l->line;
+		datash->input = listl->line;
 		datash->args = split_line(datash->input);
 		loop = exec_line(datash);
 		free(datash->args);
@@ -154,14 +150,14 @@ int split_commands(data_shell *datash, char *input)
 		if (loop == 0)
 			break;
 
-		go_next(&list_s, &list_l, datash);
+		go_next(&lists, &listl, datash);
 
-		if (list_l != NULL)
-			list_l = list_l->next;
+		if (listl != NULL)
+			listl = listl->next;
 	}
 
-	free_sep_list(&head_s);
-	free_line_list(&head_l);
+	free_sep_list(&heads);
+	free_line_list(&headl);
 
 	if (loop == 0)
 		return (0);
@@ -169,44 +165,43 @@ int split_commands(data_shell *datash, char *input)
 }
 
 /**
- * split_line - tokenizes the input string
- *
- * @input: input string.
- * Return: string splitted.
+ * split_line - inp str token
+ * @input: str inp
+ * Return: splitted str
  */
 char **split_line(char *input)
 {
-	size_t bsize;
-	size_t i;
-	char **tokens;
-	char *token;
+	size_t bsiz;
+	size_t j;
+	char **tokns;
+	char *tokn;
 
-	bsize = TOK_BUFSIZE;
-	tokens = malloc(sizeof(char *) * (bsize));
-	if (tokens == NULL)
+	bsiz = TOK_BUFSIZE;
+	tokns = malloc(sizeof(char *) * (bsiz));
+	if (tokns == NULL)
 	{
 		write(STDERR_FILENO, ": allocation error\n", 18);
 		exit(EXIT_FAILURE);
 	}
 
-	token = _strtok(input, TOK_DELIM);
-	tokens[0] = token;
+	tokn = _strtok(input, TOK_DELIM);
+	tokns[0] = tokn;
 
-	for (i = 1; token != NULL; i++)
+	for (j = 1; tokn != NULL; j++)
 	{
-		if (i == bsize)
+		if (j == bsiz)
 		{
-			bsize += TOK_BUFSIZE;
-			tokens = _reallocdp(tokens, i, sizeof(char *) * bsize);
-			if (tokens == NULL)
+			bsiz += TOK_BUFSIZE;
+			tokns = _reallocdp(tokns, j, sizeof(char *) * bsiz);
+			if (tokns == NULL)
 			{
 				write(STDERR_FILENO, ": allocation error\n", 18);
 				exit(EXIT_FAILURE);
 			}
 		}
-		token = _strtok(NULL, TOK_DELIM);
-		tokens[i] = token;
+		tokn = _strtok(NULL, TOK_DELIM);
+		tokns[j] = tokn;
 	}
 
-	return (tokens);
+	return (tokns);
 }

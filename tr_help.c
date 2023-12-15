@@ -6,7 +6,8 @@
  */
 void aux_help_env(void)
 {
-	char *helping = "enviroment: enviroment [option] [name=value] [command [args]]\n\t";
+	char *helping =
+		"enviroment: enviroment [option] [name=value] [command [args]]\n\t";
 
 	write(STDOUT_FILENO, helping, _strlen(helping));
 	helping = "Print the env of the shell.\n";
@@ -20,7 +21,8 @@ void aux_help_env(void)
 void aux_help_setenv(void)
 {
 
-	char *helping = "setenv:iroment setenviroment (const char *name, const char *value,";
+	char *helping =
+		"setenv:iroment setenviroment (const char *name, const char *value,";
 
 	write(STDOUT_FILENO, helping, _strlen(helping));
 	helping = "integer replace)\n\t";

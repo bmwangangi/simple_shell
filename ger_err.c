@@ -3,7 +3,7 @@
 /**
  * get_error - used to get the error
  * @datashel: the data containing the infomatuion
- * @evaluate: the value 
+ * @evaluate: the value
  * Return: error
  */
 int get_error(d_shell *datashel, int evaluate)

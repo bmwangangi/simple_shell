@@ -55,7 +55,7 @@ typedef struct sep_list_s
 
 /**
  * struct line_list_s - single linked list
- * @line: cmdd 
+ * @line: cmdd
  * @next: -> node
  * Description: the store of command lines
  */
@@ -82,8 +82,8 @@ typedef struct r_var_list
 } r_var;
 
 /**
- * struct builtin_s - Builtin struct 
- * @name: The name 
+ * struct builtin_s - Builtin struct
+ * @name: The name
  * @f: pointer.
  */
 typedef struct builtin_s

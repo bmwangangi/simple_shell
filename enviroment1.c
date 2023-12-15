@@ -60,11 +60,11 @@ int _env(d_shell *datashel)
 
 	for (a = 0; datashel->_environ[a]; a++)
 	{
-
-		for (b = 0; datashel->_environ[a][b]; b++);
-
-		write(STDOUT_FILENO, datashel->_environ[a], b);
-		write(STDOUT_FILENO, "\n", 1);
+		for (b = 0; datashel->_environ[a][b]; b++)
+		{
+			write(STDOUT_FILENO, datashel->_environ[a], b);
+			write(STDOUT_FILENO, "\n", 1);
+		}
 	}
 	datashel->status = 0;
 

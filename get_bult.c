@@ -3,7 +3,7 @@
 /**
  * get_builtin - used for passing commands
  * @cmd: the command
- * Return: function pointer 
+ * Return: function pointer
  */
 int (*get_builtin(char *cmd))(d_shell *)
 {

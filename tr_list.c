@@ -2,8 +2,8 @@
 
 /**
  * add_sep_node_end - used for separation
- * @head: the start of the list
- * @sep: holds the separator.
+ * @start: the start of the list
+ * @separate: holds the separator.
  * Return: address.
  */
 sep_list *add_sep_node_end(sep_list **start, char separate)

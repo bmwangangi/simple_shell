@@ -81,7 +81,7 @@ char *_strchr(char *string, char character)
 /**
  * _strspn - len of substring
  * @string: prev subline
- * @acceptimg: bytes acc
+ * @accepting: bytes acc
  * Return: count of acc bytes
  */
 int _strspn(char *string, char *accepting)

@@ -2,7 +2,7 @@
 
 /**
  * repeated_char - counts rep char
- * @input: inp str
+ * @inp: inp str
  * @r: index
  * Return: rep
  */
@@ -90,7 +90,7 @@ int first_char(char *inp, int *r)
 
 /**
  * print_syntax_error - when there is syntax error, it prints
- * @datashel: structure: 
+ * @datashel: structure:
  * @inp: str inp
  * @r: error index
  * @bool: there to control msg error

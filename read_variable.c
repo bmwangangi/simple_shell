@@ -2,12 +2,12 @@
 
 /**
  * check_env - is typed variable an env var
- * @h: header
- * @in: string input
+ * @t: title
+ * @inp: string input
  * @data: d struc
  * Return: return 0
  */
-void check_env(r_var **h, char *in, data_shell *data)
+void check_env(r_var **t, char *inp, d_shell *data)
 {
 	int rw, ch, k, lvl;
 	char **_envr;
@@ -20,61 +20,61 @@ void check_env(r_var **h, char *in, data_shell *data)
 			if (_envr[rw][ch] == '=')
 			{
 				lvl = _strlen(_envr[rw] + ch + 1);
-				add_rvar_node(h, k, _envr[rw] + ch + 1, lvl);
+				add_rvar_node(t, k, _envr[rw] + ch + 1, lvl);
 				return;
 			}
 
-			if (in[k] == _envr[rw][ch])
+			if (inp[k] == _envr[rw][ch])
 				k++;
 			else
 				break;
 		}
 	}
 
-	for (k = 0; in[k]; k++)
+	for (k = 0; inp[k]; k++)
 	{
-		if (in[k] == ' ' || in[k] == '\t' || in[k] == ';' || in[k] == '\n')
+		if (inp[k] == ' ' || inp[k] == '\t' || inp[k] == ';' || inp[k] == '\n')
 			break;
 	}
 
-	add_rvar_node(h, k, NULL, 0);
+	add_rvar_node(t, k, NULL, 0);
 }
 
 /**
  * check_vars - is typed variable $$ or $?
- * @h: linked list header
- * @in: string inp
+ * @t: linked list header
+ * @inp: string inp
  * @st: last status of Shell
  * @data: data struc
  * Return: return 0
  */
-int check_vars(r_var **h, char *in, char *st, data_shell *data)
+int check_vars(r_var **t, char *inp, char *st, d_shell *data)
 {
 	int j, list, lpid;
 
 	list = _strlen(st);
 	lpid = _strlen(data->pid);
 
-	for (j = 0; in[j]; j++)
+	for (j = 0; inp[j]; j++)
 	{
-		if (in[j] == '$')
+		if (inp[j] == '$')
 		{
-			if (in[j + 1] == '?')
-				add_rvar_node(h, 2, st, list), j++;
-			else if (in[j + 1] == '$')
-				add_rvar_node(h, 2, data->pid, lpid), j++;
-			else if (in[j + 1] == '\n')
-				add_rvar_node(h, 0, NULL, 0);
-			else if (in[j + 1] == '\0')
-				add_rvar_node(h, 0, NULL, 0);
-			else if (in[j + 1] == ' ')
-				add_rvar_node(h, 0, NULL, 0);
-			else if (in[j + 1] == '\t')
-				add_rvar_node(h, 0, NULL, 0);
-			else if (in[j + 1] == ';')
-				add_rvar_node(h, 0, NULL, 0);
+			if (inp[j + 1] == '?')
+				add_rvar_node(t, 2, st, list), j++;
+			else if (inp[j + 1] == '$')
+				add_rvar_node(t, 2, data->pid, lpid), j++;
+			else if (inp[j + 1] == '\n')
+				add_rvar_node(t, 0, NULL, 0);
+			else if (inp[j + 1] == '\0')
+				add_rvar_node(t, 0, NULL, 0);
+			else if (inp[j + 1] == ' ')
+				add_rvar_node(t, 0, NULL, 0);
+			else if (inp[j + 1] == '\t')
+				add_rvar_node(t, 0, NULL, 0);
+			else if (inp[j + 1] == ';')
+				add_rvar_node(t, 0, NULL, 0);
 			else
-				check_env(h, in + j, data);
+				check_env(t, inp + j, data);
 		}
 	}
 
@@ -135,19 +135,19 @@ char *replaced_input(r_var **head, char *input, char *new_input, int nlen)
 /**
  * rep_var - function for replacement
  * @input: str inp
- * @datash: data struc
+ * @datashel: data struc
  * Return: str replaced
  */
-char *rep_var(char *input, data_shell *datash)
+char *rep_var(char *input, d_shell *datashel)
 {
 	r_var *head, *indx;
 	char *state, *new_inp;
 	int olen, nlen;
 
-	state = aux_itoa(datash->status);
+	state = aux_itoa(datashel->status);
 	head = NULL;
 
-	olen = check_vars(&head, input, state, datash);
+	olen = check_vars(&head, input, state, datashel);
 
 	if (head == NULL)
 	{

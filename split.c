@@ -2,30 +2,30 @@
 
 /**
  * swap_char - | and & swaps for non-prnted char
- * @input: string inp
+ * @inp: string inp
  * @bool: swap type
  * Return: str swapped
  */
-char *swap_char(char *input, int bool)
+char *swap_char(char *inp, int bool)
 {
 	int j;
 
 	if (bool == 0)
 	{
-		for (j = 0; input[j]; j++)
+		for (j = 0; inp[j]; j++)
 		{
-			if (input[j] == '|')
+			if (inp[j] == '|')
 			{
-				if (input[j + 1] != '|')
-					input[j] = 16;
+				if (inp[j + 1] != '|')
+					inp[j] = 16;
 				else
 					j++;
 			}
 
-			if (input[j] == '&')
+			if (inp[j] == '&')
 			{
-				if (input[j + 1] != '&')
-					input[j] = 12;
+				if (inp[j + 1] != '&')
+					inp[j] = 12;
 				else
 					j++;
 			}
@@ -33,45 +33,45 @@ char *swap_char(char *input, int bool)
 	}
 	else
 	{
-		for (j = 0; input[j]; j++)
+		for (j = 0; inp[j]; j++)
 		{
-			input[j] = (input[j] == 16 ? '|' : input[j]);
-			input[j] = (input[j] == 12 ? '&' : input[j]);
+			inp[j] = (inp[j] == 16 ? '|' : inp[j]);
+			inp[j] = (inp[j] == 12 ? '&' : inp[j]);
 		}
 	}
-	return (input);
+	return (inp);
 }
 
 /**
  * add_nodes - add separators $ command lines
- * @head_s: sep list head
- * @head_l: cmd lines inp head
- * @input: str inp
+ * @h_s: sep list head
+ * @h_l: cmd lines inp head
+ * @inp: str inp
  * Return: return 0
  */
-void add_nodes(sep_list **head_s, line_list **head_l, char *input)
+void add_nodes(sep_list **h_s, line_list **h_l, char *inp)
 {
 	int j;
 	char *lin;
 
-	input = swap_char(input, 0);
+	inp = swap_char(inp, 0);
 
-	for (j = 0; input[j]; j++)
+	for (j = 0; inp[j]; j++)
 	{
-		if (input[j] == ';')
-			add_sep_node_end(head_s, input[j]);
+		if (inp[j] == ';')
+			add_sep_node_end(h_s, inp[j]);
 
-		if (input[j] == '|' || input[j] == '&')
+		if (inp[j] == '|' || inp[j] == '&')
 		{
-			add_sep_node_end(head_s, input[j]);
+			add_sep_node_end(h_s, inp[j]);
 			j++;
 		}
 	}
 
-	lin = _strtok(input, ";|&");
+	lin = _strtok(inp, ";|&");
 	do {
 		lin = swap_char(lin, 1);
-		add_line_node_end(head_l, lin);
+		add_line_node_end(h_l, lin);
 		lin = _strtok(NULL, ";|&");
 	} while (lin != NULL);
 
@@ -79,24 +79,24 @@ void add_nodes(sep_list **head_s, line_list **head_l, char *input)
 
 /**
  * go_next - go to stored next cmd line
- * @list_s: sep list
- * @list_l: cmd line lst
- * @datash: data struc
+ * @l_s: sep list
+ * @l_l: cmd line lst
+ * @datashel: data struc
  * Return: return 0
  */
-void go_next(sep_list **list_s, line_list **list_l, data_shell *datash)
+void go_next(sep_list **l_s, line_list **l_l, d_shell *datashel)
 {
 	int loopsep;
 	sep_list *lss;
 	line_list *lsl;
 
 	loopsep = 1;
-	lss = *list_s;
-	lsl = *list_l;
+	lss = *l_s;
+	lsl = *l_l;
 
 	while (lss != NULL && loopsep)
 	{
-		if (datash->status == 0)
+		if (datashel->status == 0)
 		{
 			if (lss->separator == '&' || lss->separator == ';')
 				loopsep = 0;
@@ -114,18 +114,18 @@ void go_next(sep_list **list_s, line_list **list_l, data_shell *datash)
 			lss = lss->next;
 	}
 
-	*list_s = lss;
-	*list_l = lsl;
+	*l_s = lss;
+	*l_l = lsl;
 }
 
 /**
  * split_commands - splits cmd lines
  * executes the separators ;, | and &
- * @datash: data struc
- * @input: str inp
+ * @datashel: data struc
+ * @inp: str inp
  * Return: 0 to quit, 1 to proceed
  */
-int split_commands(data_shell *datash, char *input)
+int split_commands(d_shell *datashel, char *inp)
 {
 
 	sep_list *heads, *lists;
@@ -135,22 +135,22 @@ int split_commands(data_shell *datash, char *input)
 	heads = NULL;
 	headl = NULL;
 
-	add_nodes(&heads, &headl, input);
+	add_nodes(&heads, &headl, inp);
 
 	lists = heads;
 	listl = headl;
 
 	while (listl != NULL)
 	{
-		datash->input = listl->line;
-		datash->args = split_line(datash->input);
-		loop = exec_line(datash);
-		free(datash->args);
+		datashel->input = listl->line;
+		datashel->args = split_line(datashel->input);
+		loop = exec_line(datashel);
+		free(datashel->args);
 
 		if (loop == 0)
 			break;
 
-		go_next(&lists, &listl, datash);
+		go_next(&lists, &listl, datashel);
 
 		if (listl != NULL)
 			listl = listl->next;
@@ -166,10 +166,10 @@ int split_commands(data_shell *datash, char *input)
 
 /**
  * split_line - inp str token
- * @input: str inp
+ * @inp: str inp
  * Return: splitted str
  */
-char **split_line(char *input)
+char **split_line(char *inp)
 {
 	size_t bsiz;
 	size_t j;
@@ -184,7 +184,7 @@ char **split_line(char *input)
 		exit(EXIT_FAILURE);
 	}
 
-	tokn = _strtok(input, TOK_DELIM);
+	tokn = _strtok(inp, TOK_DELIM);
 	tokns[0] = tokn;
 
 	for (j = 1; tokn != NULL; j++)

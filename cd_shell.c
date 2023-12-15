@@ -2,16 +2,15 @@
 
 /**
  * cd_shell - used for changing directories
- *
- * @datash: the data available
+ * @datashel: the data available
  * Return: 1
  */
-int cd_shell(data_shell *datash)
+int cd_shell(d_shell *datashel)
 {
 	char *directory;
 	int homevariable, homevariable2, doubledash;
 
-	directory = datash->args[1];
+	directory = datashel->args[1];
 
 	if (directory != NULL)
 	{
@@ -22,23 +21,23 @@ int cd_shell(data_shell *datash)
 
 	if (directory == NULL || !homevariable || !homevariable2 || !doubledash)
 	{
-		cd_to_home(datash);
+		cd_to_home(datashel);
 		return (1);
 	}
 
 	if (_strcmp("-", directory) == 0)
 	{
-		cd_previous(datash);
+		cd_previous(datashel);
 		return (1);
 	}
 
 	if (_strcmp(".", directory) == 0 || _strcmp("..", directory) == 0)
 	{
-		cd_dot(datash);
+		cd_dot(datashel);
 		return (1);
 	}
 
-	cd_to(datash);
+	cd_to(datashel);
 
 	return (1);
 }

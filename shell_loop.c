@@ -2,46 +2,44 @@
 
 /**
  * without_comment - removes all the comments from the input
- *
- * @in: the string to input
+ * @inp: the string to input
  * Return: no comments
  */
-char *without_comment(char *in)
+char *without_comment(char *inp)
 {
 	int a, where;
 
 	where = 0;
-	for (a = 0; in[a]; a++)
+	for (a = 0; inp[a]; a++)
 	{
-		if (in[a] == '#')
+		if (inp[a] == '#')
 		{
 			if (a == 0)
 			{
-				free(in);
+				free(inp);
 				return (NULL);
 			}
 
-			if (in[a - 1] == ' ' || in[a - 1] == '\t' || in[a - 1] == ';')
+			if (inp[a - 1] == ' ' || inp[a - 1] == '\t' || inp[a - 1] == ';')
 				where = a;
 		}
 	}
 
 	if (where != 0)
 	{
-		in = _realloc(in, a, where + 1);
-		in[where] = '\0';
+		inp = _realloc(inp, a, where + 1);
+		inp[where] = '\0';
 	}
 
-	return (in);
+	return (inp);
 }
 
 /**
  * shell_loop - the looping of the shell
- * @datash: the data holding the infomation
- *
+ * @datashel: the data holding the infomation
  * Return: 0
  */
-void shell_loop(data_shell *datash)
+void shell_loop(d_shell *datashel)
 {
 	int looping, where;
 	char *insert;
@@ -57,15 +55,15 @@ void shell_loop(data_shell *datash)
 			if (insert == NULL)
 				continue;
 
-			if (check_syntax_error(datash, insert) == 1)
+			if (check_syntax_error(datashel, insert) == 1)
 			{
-				datash->status = 2;
+				datashel->status = 2;
 				free(insert);
 				continue;
 			}
-			insert = rep_var(insert, datash);
-			looping = split_commands(datash, insert);
-			datash->counter += 1;
+			insert = rep_var(insert, datashel);
+			looping = split_commands(datashel, insert);
+			datashel->counter += 1;
 			free(insert);
 		}
 		else

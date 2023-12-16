@@ -2,32 +2,32 @@
 
 /**
  * _strdup - duplicates a str in the heap memory.
- * @string: Type char pointer str
+ * @s: Type char pointer str
  * Return: duplicated str
  */
-char *_strdup(const char *string)
+char *_strdup(const char *s)
 {
 	char *new;
 	size_t len;
 
-	len = _strlen(string);
+	len = _strlen(s);
 	new = malloc(sizeof(char) * (len + 1));
 	if (new == NULL)
 		return (NULL);
-	_memcpy(new, string, len + 1);
+	_memcpy(new, s, len + 1);
 	return (new);
 }
 
 /**
  * _strlen - Returns the lenght of a string.
- * @string: Type char pointer
+ * @s: Type char pointer
  * Return: Always 0.
  */
-int _strlen(const char *string)
+int _strlen(const char *s)
 {
 	int len;
 
-	for (len = 0; string[len] != 0; len++)
+	for (len = 0; s[len] != 0; len++)
 	{
 	}
 	return (len);
@@ -35,20 +35,20 @@ int _strlen(const char *string)
 
 /**
  * cmp_chars - compare chars of strings
- * @string: input string.
- * @trab: delimiter.
+ * @str: input string.
+ * @delim: delimiter.
  *
  * Return: 1 if are equals, 0 if not.
  */
-int cmp_chars(char string[], const char *trab)
+int cmp_chars(char str[], const char *delim)
 {
 	unsigned int i, j, k;
 
-	for (i = 0, k = 0; string[i]; i++)
+	for (i = 0, k = 0; str[i]; i++)
 	{
-		for (j = 0; trab[j]; j++)
+		for (j = 0; delim[j]; j++)
 		{
-			if (string[i] == trab[j])
+			if (str[i] == delim[j])
 			{
 				k++;
 				break;
@@ -62,37 +62,39 @@ int cmp_chars(char string[], const char *trab)
 
 /**
  * _strtok - splits a string by some delimiter.
- * @string: input string.
- * @trab: delimiter.
+ * @str: input string.
+ * @delim: delimiter.
  *
  * Return: string splited.
  */
-char *_strtok(char string[], const char *trab)
+char *_strtok(char str[], const char *delim)
 {
 	static char *splitted, *str_end;
 	char *str_start;
 	unsigned int i, bool;
 
-	if (string != NULL)
+	if (str != NULL)
 	{
-		if (cmp_chars(string, trab))
+		if (cmp_chars(str, delim))
 			return (NULL);
-		splitted = string;
-		i = _strlen(string);
-		str_end = &string[i];
+		splitted = str; /*Store first address*/
+		i = _strlen(str);
+		str_end = &str[i]; /*Store last address*/
 	}
 	str_start = splitted;
-	if (str_start == str_end)
+	if (str_start == str_end) /*Reaching the end*/
 		return (NULL);
 
 	for (bool = 0; *splitted; splitted++)
 	{
+		/*Breaking loop finding the next token*/
 		if (splitted != str_start)
 			if (*splitted && *(splitted - 1) == '\0')
 				break;
-		for (i = 0; trab[i]; i++)
+		/*Replacing delimiter for null char*/
+		for (i = 0; delim[i]; i++)
 		{
-			if (*splitted == trab[i])
+			if (*splitted == delim[i])
 			{
 				*splitted = '\0';
 				if (splitted == str_start)
@@ -100,10 +102,10 @@ char *_strtok(char string[], const char *trab)
 				break;
 			}
 		}
-		if (bool == 0 && *splitted)
+		if (bool == 0 && *splitted) /*Str != Delim*/
 			bool = 1;
 	}
-	if (bool == 0)
+	if (bool == 0) /*Str == Delim*/
 		return (NULL);
 	return (str_start);
 }
@@ -111,16 +113,16 @@ char *_strtok(char string[], const char *trab)
 /**
  * _isdigit - defines if string passed is a number
  *
- * @string: input string
+ * @s: input string
  * Return: 1 if string is a number. 0 in other case.
  */
-int _isdigit(const char *string)
+int _isdigit(const char *s)
 {
 	unsigned int i;
 
-	for (i = 0; string[i]; i++)
+	for (i = 0; s[i]; i++)
 	{
-		if (string[i] < 48 || string[i] > 57)
+		if (s[i] < 48 || s[i] > 57)
 			return (0);
 	}
 	return (1);

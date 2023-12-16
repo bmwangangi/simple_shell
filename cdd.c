@@ -1,46 +1,46 @@
 #include "main.h"
 
 /**
- * cd_dot - New parent directory
+ * cd_dot - changes to the parent directory
  *
- * @datash: env data relevant
+ * @datash: data relevant (environ)
  *
- * Return: return 0
+ * Return: no return
  */
 void cd_dot(data_shell *datash)
 {
-	char pwdir[PATH_MAX];
-	char *directory, *cp_pwdir, *cp_strtok_pwdir;
+	char pwd[PATH_MAX];
+	char *dir, *cp_pwd, *cp_strtok_pwd;
 
-	getcwd(pwdir, sizeof(pwdir));
-	cp_pwdir = _strdup(pwdir);
-	set_env("OLDPWD", cp_pwdir, datash);
-	directory = datash->args[1];
-	if (_strcmp(".", directory) == 0)
+	getcwd(pwd, sizeof(pwd));
+	cp_pwd = _strdup(pwd);
+	set_env("OLDPWD", cp_pwd, datash);
+	dir = datash->args[1];
+	if (_strcmp(".", dir) == 0)
 	{
-		set_env("PWD", cp_pwdir, datash);
-		free(cp_pwdir);
+		set_env("PWD", cp_pwd, datash);
+		free(cp_pwd);
 		return;
 	}
-	if (_strcmp("/", cp_pwdir) == 0)
+	if (_strcmp("/", cp_pwd) == 0)
 	{
-		free(cp_pwdir);
+		free(cp_pwd);
 		return;
 	}
-	cp_strtok_pwdir = cp_pwdir;
-	rev_string(cp_strtok_pwdir);
-	cp_strtok_pwdir = _strtok(cp_strtok_pwdir, "/");
-	if (cp_strtok_pwdir != NULL)
+	cp_strtok_pwd = cp_pwd;
+	rev_string(cp_strtok_pwd);
+	cp_strtok_pwd = _strtok(cp_strtok_pwd, "/");
+	if (cp_strtok_pwd != NULL)
 	{
-		cp_strtok_pwdir = _strtok(NULL, "\0");
+		cp_strtok_pwd = _strtok(NULL, "\0");
 
-		if (cp_strtok_pwdir != NULL)
-			rev_string(cp_strtok_pwdir);
+		if (cp_strtok_pwd != NULL)
+			rev_string(cp_strtok_pwd);
 	}
-	if (cp_strtok_pwdir != NULL)
+	if (cp_strtok_pwd != NULL)
 	{
-		chdir(cp_strtok_pwdir);
-		set_env("PWD", cp_strtok_pwdir, datash);
+		chdir(cp_strtok_pwd);
+		set_env("PWD", cp_strtok_pwd, datash);
 	}
 	else
 	{
@@ -48,117 +48,118 @@ void cd_dot(data_shell *datash)
 		set_env("PWD", "/", datash);
 	}
 	datash->status = 0;
-	free(cp_pwdir);
+	free(cp_pwd);
 }
 
 /**
- * cd_to - dir changes
+ * cd_to - changes to a directory given
+ * by the user
  *
- * @datash: dir relevant data
- * Return: return 0
+ * @datash: data relevant (directories)
+ * Return: no return
  */
 void cd_to(data_shell *datash)
 {
-	char pwdir[PATH_MAX];
-	char *directory, *cp_pwdir, *cp_directory;
+	char pwd[PATH_MAX];
+	char *dir, *cp_pwd, *cp_dir;
 
-	getcwd(pwdir, sizeof(pwdir));
+	getcwd(pwd, sizeof(pwd));
 
-	directory = datash->args[1];
-	if (chdir(directory) == -1)
+	dir = datash->args[1];
+	if (chdir(dir) == -1)
 	{
 		get_error(datash, 2);
 		return;
 	}
 
-	cp_pwdir = _strdup(pwdir);
-	set_env("OLDPWD", cp_pwdir, datash);
+	cp_pwd = _strdup(pwd);
+	set_env("OLDPWD", cp_pwd, datash);
 
-	cp_directory = _strdup(directory);
-	set_env("PWD", cp_directory, datash);
+	cp_dir = _strdup(dir);
+	set_env("PWD", cp_dir, datash);
 
-	free(cp_pwdir);
-	free(cp_directory);
+	free(cp_pwd);
+	free(cp_dir);
 
 	datash->status = 0;
 
-	chdir(directory);
+	chdir(dir);
 }
 
 /**
- * cd_previous - prev dir changes
+ * cd_previous - changes to the previous directory
  *
- * @datash: env relevant data
- * Return: return 0
+ * @datash: data relevant (environ)
+ * Return: no return
  */
 void cd_previous(data_shell *datash)
 {
-	char pwdir[PATH_MAX];
-	char *p_pwdir, *p_oldpwdir, *cp_pwdir, *cp_oldpwdir;
+	char pwd[PATH_MAX];
+	char *p_pwd, *p_oldpwd, *cp_pwd, *cp_oldpwd;
 
-	getcwd(pwdir, sizeof(pwdir));
-	cp_pwdir = _strdup(pwdir);
+	getcwd(pwd, sizeof(pwd));
+	cp_pwd = _strdup(pwd);
 
-	p_oldpwdir = _getenv("OLDPWD", datash->_environ);
+	p_oldpwd = _getenv("OLDPWD", datash->_environ);
 
-	if (p_oldpwdir == NULL)
-		cp_oldpwdir = cp_pwdir;
+	if (p_oldpwd == NULL)
+		cp_oldpwd = cp_pwd;
 	else
-		cp_oldpwdir = _strdup(p_oldpwdir);
+		cp_oldpwd = _strdup(p_oldpwd);
 
-	set_env("OLDPWD", cp_pwdir, datash);
+	set_env("OLDPWD", cp_pwd, datash);
 
-	if (chdir(cp_oldpwdir) == -1)
-		set_env("PWD", cp_pwdir, datash);
+	if (chdir(cp_oldpwd) == -1)
+		set_env("PWD", cp_pwd, datash);
 	else
-		set_env("PWD", cp_oldpwdir, datash);
+		set_env("PWD", cp_oldpwd, datash);
 
-	p_pwdir = _getenv("PWD", datash->_environ);
+	p_pwd = _getenv("PWD", datash->_environ);
 
-	write(STDOUT_FILENO, p_pwdir, _strlen(p_pwdir));
+	write(STDOUT_FILENO, p_pwd, _strlen(p_pwd));
 	write(STDOUT_FILENO, "\n", 1);
 
-	free(cp_pwdir);
-	if (p_oldpwdir)
-		free(cp_oldpwdir);
+	free(cp_pwd);
+	if (p_oldpwd)
+		free(cp_oldpwd);
 
 	datash->status = 0;
 
-	chdir(p_pwdir);
+	chdir(p_pwd);
 }
 
 /**
- * cd_to_home - new home directory
+ * cd_to_home - changes to home directory
  *
- * @datash: env relevant data
- * Return: return 0
+ * @datash: data relevant (environ)
+ * Return: no return
  */
 void cd_to_home(data_shell *datash)
 {
-	char *p_pwdir, *home;
-	char pwdir[PATH_MAX];
+	char *p_pwd, *home;
+	char pwd[PATH_MAX];
 
-	getcwd(pwdir, sizeof(pwdir));
-	p_pwdir = _strdup(pwdir);
+	getcwd(pwd, sizeof(pwd));
+	p_pwd = _strdup(pwd);
 
 	home = _getenv("HOME", datash->_environ);
 
 	if (home == NULL)
 	{
-		set_env("OLDPWD", p_pwdir, datash);
-		free(p_pwdir);
+		set_env("OLDPWD", p_pwd, datash);
+		free(p_pwd);
 		return;
 	}
 
 	if (chdir(home) == -1)
 	{
 		get_error(datash, 2);
-		free(p_pwdir);
+		free(p_pwd);
 		return;
 	}
 
-	set_env("OLDPWD", p_pwdir, datash);
+	set_env("OLDPWD", p_pwd, datash);
 	set_env("PWD", home, datash);
-	free(p_pwdir);
+	free(p_pwd);
 	datash->status = 0;
 }
